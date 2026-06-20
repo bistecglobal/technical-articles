@@ -14,6 +14,7 @@ OKR and performance management platform used by Bistec.
 - *Building an AI-Autonomous Backlog Loop* — how we set up Claude to continuously implement, merge, and regenerate backlog items without human intervention
 - *MCP-First Feature Development* — shipping features with Claude MCP tools as the primary API surface for AI agents
 - *From BACKLOG.md to Production: Autonomous Software Delivery* — the scheduling, heartbeat, and inject pattern powering zero-touch delivery
+- *Domain-First MCP Design: Building OKR Tools That AI Agents Actually Use* — how we systematically exposed recognition, feedback, analytics, and template tools via MCP, including a service-layer extraction to eliminate API/MCP duplication [commits: `051cdfc`, `f7161bc`, `5149b32`]
 
 ---
 
@@ -26,6 +27,8 @@ AI-powered spec and proposal generation tool.
 **Article ideas:**
 - *Spec-Driven Development with AI: How Specclaw Turns Ideas into Actionable Proposals* — the proposal format, acceptance criteria generation, and backlog integration
 - *Designing for AI-First UX: Lessons from Specclaw* — reducing friction for users interacting primarily through Claude
+- *Packaging a Workflow as a Claude Code Plugin: From Private Tool to Marketplace* — how we took the specclaw spec workflow and published it as a distributable Claude Code plugin, including auto-init, per-repo learning, and Azure Boards integration [commits: `2c80c88` v0.1.0, `2d11406` per-repo knowledge, `aec77ba` Azure Boards]
+- *The Spec-Author Subagent: Automating Proposal Writing Within a Planning Workflow* — how `/specclaw:author-spec` spawns a focused subagent to draft the spec document, and how it integrates with the `/specclaw:plan` command via `--author-spec` flag [commit: `1179910`]
 
 ---
 
@@ -40,6 +43,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Building a Mission Control for AI Agents* — neon graph UI, stall detection, autonomous heartbeat inject
 - *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale ✅ Published ([bistecglobal/blog#2](https://github.com/bistecglobal/blog/issues/2))
 - *Cross-Platform AI: Wiring Claude to Discord, Teams, and WhatsApp* — adapters, credential routing, and session isolation
+- *Cross-Channel Memory: Embedding-Based Shared Context for a Multi-Project AI Fleet* — SQLite + embedding store (`src/memory-store.ts`) that lets agents read and write shared memory across isolated channels, with MCP tools and backup [commit: `02b3a83` PR #47]
 
 ---
 
@@ -52,6 +56,7 @@ Core AI infrastructure and shared services for Bistec.
 **Article ideas:**
 - *Provider Routing at the Edge: Switching Between Anthropic and MiniMax Without Redeployment* — hot-swap provider pattern with env-level routing
 - *Building a Multi-Provider AI Gateway for Enterprise* — abstracting model APIs behind a unified interface
+- *DRY Principle for AI Skills: Extracting Shared Discipline Skills Across an Enterprise Agent Stack* — how we eliminated coding-standard duplication across four role skills into one canonical shared skill (`bistec-coding-standards`), cutting 166 lines from `bistec-developer` alone [commit: `ca03393` TEC-41]
 
 ---
 
@@ -63,6 +68,7 @@ Multi-tenant cloud control plane for building, deploying, and governing AI agent
 **Article ideas:**
 - *Multi-Tenant AI Agent Governance: What We Learned Building Agent Nexus* — policy enforcement, quota management, and audit trails across platforms
 - *Unifying AI Agents Across Azure, AWS, and GCP: Architecture Patterns* — adapters, normalisation, and cross-cloud observability
+- *AI Agent Observability with OTLP: Real-Time AgentScore, Cost Tracking, and Multi-Tenant Ingest* — how Agent Nexus ingests OpenTelemetry traces from Copilot Studio / Bedrock / Vertex agents, assigns per-agent scores, tracks live cost dimensions, and gates on tenant ID [commits: `46e27a5`, `4041469`, `6ad734a`, `d40a15e`]
 
 ---
 
@@ -120,6 +126,7 @@ Video and learning content pipeline for Bistec Academy.
 **Article ideas:**
 - *Automating Learning Content Pipelines with AI Agents* — from raw footage to structured course material
 - *Building a Process Documentation Bot: How We Keep Docs in Sync with Reality*
+- *Voice Cloning at Scale: MiniMax TTS Backend for AI-Generated Training Content* — how we replaced manual narration with a MiniMax voice-clone backend integrated into the academy video pipeline, covering model selection, voice consistency across tracks, and Higgsfield generative video [commits: `6e2ea3a`, `83f5eb9`]
 
 ---
 
@@ -135,4 +142,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-20 | Maintained by bistec-articles agent*
+*Updated: 2026-06-20 (ideate scan) | Maintained by bistec-articles agent*
