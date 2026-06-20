@@ -2,7 +2,7 @@
 title: "Heartbeat Watchdog Pattern for Autonomous AI Agents"
 project: claude-mcd
 tags: [AI, Claude, DevOps, TypeScript, autonomous-agents]
-status: draft
+status: audited
 date: 2026-06-20
 ---
 
@@ -94,7 +94,7 @@ The scheduler ticks every 60 seconds. The `hasFiredToday` / `hasFiredWithin` gua
 
 Not every channel needs the same sensitivity. A human-interactive channel should have a tight threshold; a fully autonomous batch-processing agent should tolerate longer silences.
 
-Per-project heartbeat config (PR #43, commit `487420e`):
+Per-project heartbeat config (PR #46, `fix/heartbeat-watchdog` series):
 
 ```json
 {
@@ -109,7 +109,7 @@ Per-project heartbeat config (PR #43, commit `487420e`):
 }
 ```
 
-`staleAfterMinutes` gates the transcript scanner. The per-project `stuckThresholdMinutes` field (PR #43) feeds into `ProjectPool` to set the adaptive watchdog base for that channel.
+`staleAfterMinutes` gates the transcript scanner. The separate per-project `stuckThresholdMinutes` field (PR #43, commit `487420e`) feeds into `ProjectPool` to set the adaptive watchdog base for that channel.
 
 ## What the Fleet Sees
 
@@ -127,4 +127,4 @@ This surfaces what was previously invisible: which channels are working and whic
 
 ---
 
-The heartbeat watchdog is now the backbone of running 15+ autonomous agent channels simultaneously with no manual intervention. The pattern is straightforward — read the transcript, measure the anomaly age, inject a recovery message — but each of the three details above (transcript scanning, adaptive threshold, same-path injection) took a real production failure to discover.
+The heartbeat watchdog is now the backbone of running 19 autonomous agent channels simultaneously with no manual intervention. The pattern is straightforward — read the transcript, measure the anomaly age, inject a recovery message — but each of the three details above (transcript scanning, adaptive threshold, same-path injection) took a real production failure to discover.
