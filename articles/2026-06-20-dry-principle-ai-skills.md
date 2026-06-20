@@ -2,7 +2,7 @@
 title: "DRY Principle for AI Skills: Extracting Shared Discipline Skills Across an Enterprise Agent Stack"
 project: ai-core
 tags: [AI, Claude, Agents, DevOps, Software Engineering, Enterprise]
-status: draft
+status: audited
 date: 2026-06-20
 ---
 
@@ -74,7 +74,7 @@ The `bistec-developer` skill then continues with content that is genuinely devel
 
 ## The Outcome
 
-The extraction produced a direct, measurable result: `skills/bistec-developer/SKILL.md` dropped from **553 → 387 lines** — a 30% reduction, with 166 lines moved rather than deleted (commit `ca03393`). The other three role skills saw proportional reductions. The content did not change; it moved to a place where a single edit propagates everywhere.
+The extraction produced a direct, measurable result: `skills/bistec-developer/SKILL.md` dropped from **553 → 387 lines** — a 30% reduction, with 166 lines moved rather than deleted (commit `ca03393`). The developer skill was the primary beneficiary: it had carried the most inlined content. The other three role skills added pointer paragraphs in place of their smaller per-language sections, with modest line-count shifts reflecting how much duplication each had held. The content did not change; it moved to a place where a single edit propagates everywhere.
 
 The skills/README.md migration log records the v1 → v2 transition explicitly: consumers pinned to `v1.x` of any role skill keep working until v1 is retired, because the rule surface area did not change. Upgrading to v2 means installing `bistec-coding-standards` alongside the updated role skill; together they contain exactly the same content as v1 alone.
 
