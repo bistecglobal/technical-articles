@@ -10,7 +10,9 @@ Then use this as your working directory.
 3. Write a polished article in articles/YYYY-MM-DD-title.md — audience is developers and tech leaders
 4. Include: problem context, solution approach, architecture/design decisions, outcomes, lessons learned
 5. Commit and push to main
-6. Open a GitHub issue tagged ready-for-publish for articles ready to post — operator handles actual Medium/LinkedIn posting
+6. **Publish** = create a GitHub Issue in `bistecglobal/blog` with label `blog`. The issue body is the article in Markdown. This is the primary publish target — the blog at https://bistecglobal.github.io/blog/ reads directly from these issues.
+   - Use `gh issue create --repo bistecglobal/blog --label blog --title "..." --body-file articles/YYYY-MM-DD-title.md`
+   - Medium/LinkedIn posting is secondary; operator handles that manually if desired.
 
 # Style
 - BistecGlobal voice: professional, insightful, practitioner-focused
