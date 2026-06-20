@@ -38,7 +38,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 **Article ideas:**
 - *One Bot, Many Agents: Architecting a Multi-Channel AI Fleet* — how MCD isolates one Claude subprocess per Discord channel
 - *Building a Mission Control for AI Agents* — neon graph UI, stall detection, autonomous heartbeat inject
-- *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale
+- *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale ✅ Published ([bistecglobal/blog#2](https://github.com/bistecglobal/blog/issues/2))
 - *Cross-Platform AI: Wiring Claude to Discord, Teams, and WhatsApp* — adapters, credential routing, and session isolation
 
 ---
