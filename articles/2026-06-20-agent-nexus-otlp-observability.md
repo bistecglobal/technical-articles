@@ -2,19 +2,19 @@
 title: "AI Agent Observability with OTLP: Real-Time AgentScore, Cost Tracking, and Multi-Tenant Ingest"
 project: agent-nexus
 tags: [AI, Observability, OpenTelemetry, Multi-Tenant, DevOps, Azure]
-status: draft
+status: audited
 date: 2026-06-20
 ---
 
 # AI Agent Observability with OTLP: Real-Time AgentScore, Cost Tracking, and Multi-Tenant Ingest
 
-When you run AI agents across Azure AI Foundry, Copilot Studio, and Google Vertex AI simultaneously, you quickly discover that each platform has its own idea of what "observable" means. Copilot Studio emits webhook events. Vertex AI exposes Cloud Trace. Foundry wraps Azure Monitor. None of these speak the same language, and none of them tell you what you really need to know: which agents are performing well, what they cost per month, and whether any are leaking data across tenant boundaries.
+When you run AI agents across Azure AI Foundry, Copilot Studio, and Google Vertex AI simultaneously, you quickly discover that each platform has its own telemetry format, its own token-reporting shape, and its own idea of what "observable" means. None of them tell you what you really need to know: which agents are performing well, what they cost per month, and whether any are leaking data across tenant boundaries.
 
 This is the problem Agent Nexus set out to solve with a dedicated observability service — one that ingests OpenTelemetry Protocol (OTLP) log records from every platform, computes a real-time score for each agent, tracks cost at the point of ingest, and enforces strict multi-tenant isolation. Here is how we built it.
 
 ## The Problem: Platform Telemetry Without a Common Denominator
 
-Agent Nexus manages AI agents across Copilot Studio, Azure AI Foundry, Bedrock, and Vertex AI. Each platform is instrumented with an OpenTelemetry collector that transforms platform-specific events into OTLP log records using the `gen_ai.*` semantic conventions — `gen_ai.agent.id`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.system`, `gen_ai.request.model`, and so on.
+Agent Nexus manages AI agents across Copilot Studio, Azure AI Foundry, and Vertex AI. Each platform is instrumented with an OpenTelemetry collector that transforms platform-specific events into OTLP log records using the `gen_ai.*` semantic conventions — `gen_ai.agent.id`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.system`, `gen_ai.request.model`, and so on.
 
 This gave us a common wire format, but three problems remained:
 
@@ -113,4 +113,4 @@ The multi-tenant design means a single deployment serves all tenants without dat
 
 **Put tenant identity in the payload, not the header.** Headers are easy to spoof inside a cluster. Stamping `tenant.id` onto each OTLP record at the collector level means tenant identity travels with the data through every processing hop, and the ingest endpoint never needs to trust an ambient header.
 
-The observability pipeline in Agent Nexus is live and processing telemetry from Copilot Studio and Vertex AI agents in production. The source lives at [github.com/chan4lk/agent-nexus](https://github.com/chan4lk/agent-nexus) across commits `6ad734a`, `4041469`, `46e27a5`, and `d40a15e`.
+The observability pipeline in Agent Nexus is merged to main and deployed via the Azure DevOps CI/CD pipeline (`cd8f1e5`, `e4c820e`), with Playwright e2e tests covering the full ingest-to-score path (`d40a15e`). The source lives at [github.com/chan4lk/agent-nexus](https://github.com/chan4lk/agent-nexus) across commits `6ad734a`, `4041469`, `46e27a5`, and `d40a15e`.
