@@ -2,7 +2,7 @@
 title: "Cross-Session Memory Distillation: How We Taught Our AI Agents to Remember What Matters"
 project: claude-mcd
 tags: [AI, Claude, Multi-Agent, Memory, TypeScript, DevOps]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -18,7 +18,7 @@ The solution was to stop asking agents to remember on the fly, and instead disti
 
 MCD runs one Claude subprocess per Discord channel, with each project directory as the working directory. Sessions start via user messages or scheduled heartbeats and end either on user command (`!kill`) or when the agent becomes idle. Each session is isolated — no state flows between them except what's written to disk.
 
-We had a `MEMORY.md` convention: agents could write key facts there, and it would be picked up by the auto-memory system in the next session. But this required the agent to proactively manage its own memory during a session while also doing its actual work. In practice, it was inconsistent — agents would write thorough notes on one session and skip it entirely the next.
+We had a `MEMORY.md` convention: agents could write key facts there, and it would be picked up by Claude Code's built-in project memory at the next session start. But this required the agent to proactively manage its own memory during a session while also doing its actual work. In practice, it was inconsistent — agents would write thorough notes on one session and skip it entirely the next.
 
 What we needed was a guaranteed, post-session sweep that could reliably extract and persist what mattered.
 
@@ -96,7 +96,7 @@ The `GET /api/memory/[slug]` route (also added in P42) exposes the raw content a
 
 ## Outcomes
 
-Memory distillation changed how our agents behave across long-running projects. On projects with `distillOnStop` enabled, agents now start sessions with accurate context about the project state — what's been built, what's pending, what was decided and why. Re-investigation of known facts dropped noticeably.
+Memory distillation changed the information available to agents at session start. On projects with `distillOnStop` enabled, `MEMORY.md` is written and available immediately when the next session opens — containing key facts, decisions, and open questions from prior sessions. The agent starts with a written record of project state rather than a blank context.
 
 The implementation is also compact. The core `src/distillation.ts` is 109 lines. It has no external dependencies beyond Node's `child_process` and `fs` modules. The retry logic is a simple two-call sequence, not a retry framework. The timeout uses a vanilla `setTimeout` + `SIGKILL`.
 
