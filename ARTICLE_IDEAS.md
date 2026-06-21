@@ -28,7 +28,7 @@ AI-powered spec and proposal generation tool.
 - *Spec-Driven Development with AI: How Specclaw Turns Ideas into Actionable Proposals* — the proposal format, acceptance criteria generation, and backlog integration
 - *Designing for AI-First UX: Lessons from Specclaw* — reducing friction for users interacting primarily through Claude
 - *Packaging a Workflow as a Claude Code Plugin: From Private Tool to Marketplace* — how we took the specclaw spec workflow and published it as a distributable Claude Code plugin, including auto-init, per-repo learning, and Azure Boards integration [commits: `2c80c88` v0.1.0, `2d11406` per-repo knowledge, `aec77ba` Azure Boards] ✅ Published ([bistecglobal/blog#5](https://github.com/bistecglobal/blog/issues/5))
-- *The Spec-Author Subagent: Automating Proposal Writing Within a Planning Workflow* — how `/specclaw:author-spec` spawns a focused subagent to draft the spec document, and how it integrates with the `/specclaw:plan` command via `--author-spec` flag [commit: `1179910`]
+- *The Spec-Author Subagent: Automating Proposal Writing Within a Planning Workflow* — how `/specclaw:author-spec` spawns a focused subagent to draft the spec document, and how it integrates with the `/specclaw:plan` command via `--author-spec` flag [commit: `1179910`] ✅ Published ([bistecglobal/blog#8](https://github.com/bistecglobal/blog/issues/8))
 
 ---
 
