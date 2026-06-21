@@ -48,6 +48,10 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *From Polling to Push: Migrating an AI Fleet Dashboard to Server-Sent Events* — how MCD replaced N×30s REST polls with a single SSE `EventSource` per tab via React context, eliminating redundant requests with 5s server-pushed fleet diffs and exponential backoff reconnect (1s→30s) [commit: `d84461d`] ✅ Published ([bistecglobal/blog#10](https://github.com/bistecglobal/blog/issues/10))
 - *Circuit Breaker for AI Subprocesses: Cross-Platform Installer and Crash Recovery in MCD* — how MCD ships a platform-native installer (Linux systemd / macOS launchd / Windows Task Scheduler) and a `FailureLedger` circuit breaker that exponentially backs off crashing Claude subprocesses before opening the circuit [commit: `2a86715`] ✅ Published ([bistecglobal/blog#11](https://github.com/bistecglobal/blog/issues/11))
 - *Autonomous Weekly Fleet Report: Turning Claude Transcripts into Observability Data* — how MCD's `/api/reports/weekly` reads Claude Code JSONL transcripts to produce per-project turns, tokens, cost, stalls, PRs, and memories with a composite impact score and neon dashboard [PR #96, commit `3e3f957`] ✅ Published ([bistecglobal/blog#14](https://github.com/bistecglobal/blog/issues/14))
+- *Live Agent Thought Stream: Visualizing Tool Calls as Floating Particles on the Fleet Graph* — how MCD tails project transcripts via SSE for new `tool_use` events and renders color-coded floating particles (cyan=file ops, amber=web, purple=agent, MCP suppressed) drifting up from project nodes with 3s lifetime [commit `f291a54` PR #95]
+- *Cross-Session Memory Distillation: Auto-Condensing Agent History on Session End* — how MCD's `distillation.ts` runs `claude -p` with 90s timeout + one retry after each session kill (`--distill-on-stop` flag), wires audit trail emission on completion, and surfaces distillation status in `!project show` [commit `feb0ed6` PR #83]
+- *Autonomous Goal Persistence: Injecting Project Goals into Every Claude Session* — how MCD writes a `GOAL.md` per project (max 500 chars, set via `!project set --goal`) and injects it as the opening message of every new session through `formatPrompt()`, keeping long-running agents on task across context resets [commit `feb0ed6` PR #83]
+- *Token Budget Enforcement for AI Agent Fleets: SSE Alerts, Queue Drain, and Monthly Rollover* — how MCD enforces per-project monthly token budgets: SSE `budget-alert` events at 50/80/100%, Discord master-channel notifications, inbound message queue when exhausted, UTC month-rollover drain with `budget-restored` event [commit `17a0f12` PR #84]
 
 ---
 
@@ -62,6 +66,7 @@ Core AI infrastructure and shared services for Bistec.
 - *Building a Multi-Provider AI Gateway for Enterprise* — abstracting model APIs behind a unified interface
 - *DRY Principle for AI Skills: Extracting Shared Discipline Skills Across an Enterprise Agent Stack* — how we eliminated coding-standard duplication across four role skills into one canonical shared skill (`bistec-coding-standards`), cutting 166 lines from `bistec-developer` alone [commit: `ca03393` TEC-41] ✅ Published ([bistecglobal/blog#3](https://github.com/bistecglobal/blog/issues/3))
 - *AI-Generated Load Tests: Turning an OpenAPI Spec into a k6 Performance Script* — how the `k6-test-generator` skill interprets an API contract, URL, or plain description and produces a ready-to-run k6 test with realistic scenario, thresholds, and parameterized load stages [commit: `83da7fe`] ✅ Published ([bistecglobal/blog#12](https://github.com/bistecglobal/blog/issues/12))
+- *Browse-Before-Install: Building a Public Skill Catalog for a Claude Code Plugin* — how ai-core serves a client-side `/catalog` page that reads the public `manifest.json`, supports tag/category filtering and name/description search, and renders one-click copy-to-install commands with no auth required [commit `d74ca76`]
 
 ---
 
@@ -147,4 +152,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-20 (ideate scan) | Maintained by bistec-articles agent*
+*Updated: 2026-06-21 (ideate scan) | Maintained by bistec-articles agent*
