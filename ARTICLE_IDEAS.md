@@ -130,7 +130,7 @@ Video and learning content pipeline for Bistec Academy.
 **Article ideas:**
 - *Automating Learning Content Pipelines with AI Agents* — from raw footage to structured course material
 - *Building a Process Documentation Bot: How We Keep Docs in Sync with Reality*
-- *Voice Cloning at Scale: MiniMax TTS Backend for AI-Generated Training Content* — how we replaced manual narration with a MiniMax voice-clone backend integrated into the academy video pipeline, covering model selection, voice consistency across tracks, and Higgsfield generative video [commits: `6e2ea3a`, `83f5eb9`]
+- *Voice Cloning at Scale: MiniMax TTS Backend for AI-Generated Training Content* — how we replaced manual narration with a MiniMax voice-clone backend integrated into the academy video pipeline, covering model selection, voice consistency across tracks, and Higgsfield generative video [commits: `6e2ea3a`, `83963a9`] ✅ Published ([bistecglobal/blog#13](https://github.com/bistecglobal/blog/issues/13))
 
 ---
 
