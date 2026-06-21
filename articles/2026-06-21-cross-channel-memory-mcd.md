@@ -2,7 +2,7 @@
 title: "Cross-Channel Memory: Embedding-Based Shared Context for a Multi-Project AI Fleet"
 project: claude-mcd
 tags: [AI, MCP, SQLite, Embeddings, DevOps, Multi-Agent]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -112,7 +112,7 @@ Memory operations are also available as operator commands from the master Discor
 
 ## Testing and Verification
 
-The implementation ships with 13 unit tests in `src/memory-store.test.ts` covering remember/recall, forget, stats, slug filtering, null-slug (global) entries, and first-run behavior (no db file). All tests passed against the acceptance criteria documented in the specclaw spec (8/8 ACs verified in `.specclaw/changes/mcd-memory-integration/verify-report.md`).
+The implementation ships with 14 unit tests in `src/memory-store.test.ts` covering remember/recall, forget, stats, slug filtering, null-slug (global) entries, and first-run behavior (no db file). All tests passed against the acceptance criteria documented in the specclaw spec (8/8 ACs verified in `.specclaw/changes/mcd-memory-integration/verify-report.md`).
 
 One known non-blocking gap documented in the PR: LIKE wildcards (`%`, `_`) in recall queries are not escaped. For the current operator-only usage this is not a security concern, and a follow-up ticket captures it.
 
@@ -122,7 +122,7 @@ The pattern here — SQLite for durability, local embeddings for semantic retrie
 
 Every component uses runtime-available primitives: Bun's bundled SQLite driver, a Xenova model that runs fully local without GPU requirements, the MCP protocol that MCD already relies on for tool delivery. There are no new infrastructure dependencies. The entire feature is a 233-line TypeScript class plus wiring.
 
-For a fleet that will keep growing, the investment compounds: each heartbeat scan now leaves behind evidence that the next scan can use. The orchestrator is no longer an amnesiac.
+For a growing fleet, the investment compounds: each heartbeat scan now leaves behind evidence that the next scan can use. The orchestrator is no longer an amnesiac.
 
 ---
 
