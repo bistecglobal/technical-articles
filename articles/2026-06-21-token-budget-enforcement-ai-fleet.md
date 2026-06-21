@@ -2,7 +2,7 @@
 title: "Token Budget Enforcement for AI Agent Fleets: SSE Alerts, Queue Drain, and Monthly Rollover"
 project: claude-mcd
 tags: [AI, DevOps, Cloud, Multi-Agent, Observability]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -14,7 +14,7 @@ This post covers the token budget enforcement system we shipped in PR #84 (commi
 
 ## The Problem: Invisible Spending at Scale
 
-Before this feature, `monthlyTokenBudget` was already stored in `channels-config.ts` — but it was purely decorative. The fleet dashboard showed raw token counts from JSONL transcripts, but nothing blocked an agent that went over, and operators only found out by checking the Anthropic console manually.
+Before this feature, `monthlyTokenBudget` was already present in the channels config JSON and read by the fleet route to display a gauge (PR #74, commit `6c3d8ad`) — but it was purely decorative. The fleet dashboard showed raw token counts from JSONL transcripts, but nothing blocked an agent that went over, and operators only found out by checking the Anthropic console manually.
 
 What we needed:
 
@@ -142,7 +142,7 @@ function computeBudgetStatus(used: number, budget: number): BudgetStatus {
 
 **Queue over drop.** When exhausted, messages are queued in memory rather than discarded. An operator sent a message for a reason — dropping it silently would be worse than a short delay. The month-rollover drain handles the eventual delivery.
 
-**Transcript-based accounting.** Reading JSONL files avoids adding a new accounting database. The cost is re-reading transcript files on every `deliver()` call for budgeted projects — acceptable for fleet sizes in the tens. If the fleet grew to hundreds, a cached counter with a short TTL would be the natural next step.
+**Transcript-based accounting.** Reading JSONL files avoids adding a new accounting database. The cost is re-reading transcript files on every `deliver()` call for budgeted projects — acceptable for fleet sizes in the tens. At larger scale, a cached counter with a short TTL would trade slightly stale reads for reduced I/O, but that tradeoff was not needed here.
 
 **Two separate dedup states.** The pool (`budgetAlertFired`) and the SSE layer (`budgetAlertState`) both track fired thresholds independently. This is intentional: the pool fires pool events for Discord notifications; the SSE layer fires browser events for dashboard toasts. Neither knows about the other's consumers, keeping the layers decoupled.
 
