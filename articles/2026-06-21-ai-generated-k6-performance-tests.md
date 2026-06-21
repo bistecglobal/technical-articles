@@ -2,7 +2,7 @@
 title: "AI-Generated Load Tests: Turning an API Contract into a Running k6 Script"
 project: ai-core
 tags: [performance-testing, k6, AI, developer-tools, QA, DevOps]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -14,11 +14,11 @@ At BistecGlobal, we shipped a Claude Code skill — `k6-test-generator` — that
 
 ## The Problem: Performance Testing as a Bottleneck
 
-Across Bistec's project portfolio — keyflow, specclaw, agent-nexus, and others — QA engineers and backend developers frequently told us the same thing: performance testing was perpetually deprioritized. The reason was rarely that teams didn't care. It was that writing a good k6 script from scratch is surprisingly involved.
+The `k6-test-generator` skill (`skills/k6-test-generator/SKILL.md`) was designed around a documented problem: QA engineers, developers, and DevOps engineers need performance tests but lack the k6 depth to write them efficiently from scratch. Writing a good k6 script is surprisingly involved.
 
 You need to know the right import structure, how to define `options.stages` for ramp-up/hold/ramp-down, how to parameterize test data using `SharedArray` to avoid memory overhead, how to write `check()` assertions that fail the test when thresholds are breached, and how to handle dynamic values like auth tokens extracted from earlier responses. That's meaningful up-front work before you've even run your first test.
 
-The result: teams ran smoke tests manually, shipped to staging, and hoped nothing fell over under load.
+The result, as the skill's design goal addresses: teams without k6 expertise either wrote ad-hoc scripts that missed k6 best practices, or skipped performance testing altogether.
 
 ## The Solution: Three Input Modes, One Usable Script
 
