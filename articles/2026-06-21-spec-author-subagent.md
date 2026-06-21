@@ -10,7 +10,7 @@ date: 2026-06-21
 
 When AI agents write software, the weakest link is usually the specification. Not the code — the spec that drives it. At Bistec, we ran into this problem repeatedly with our Specclaw plugin: the AI would generate requirements in one shot from a short proposal, producing specs that were thin, vague, and riddled with untestable acceptance criteria. Engineers would end up rewriting the spec by hand before `/specclaw:build` was safe to run.
 
-We solved this by shipping a dedicated `spec-author` subagent (commit `1179910`) — a conversational AI agent that doesn't just fill in a template, but actively challenges requirements, names brainstorming techniques aloud, and refuses to write vague acceptance criteria into the final file.
+We solved this by shipping a dedicated `spec-author` subagent — a conversational AI agent that doesn't just fill in a template, but actively challenges requirements, names brainstorming techniques aloud, and refuses to write vague acceptance criteria into the final file.
 
 ## The Problem with Single-Shot Spec Generation
 
@@ -22,7 +22,7 @@ The files `spec.md`, `design.md`, and `tasks.md` chain together — the design d
 
 ## The Spec-Author Subagent
 
-The fix is a focused subagent defined in `plugins/specclaw/agents/spec-author.md` (`1179910`). Where `/specclaw:plan` is a batch process, `spec-author` is a blocking, conversational agent that walks the user through `templates/spec.md` one section at a time.
+The fix is a focused subagent defined in `plugins/specclaw/agents/spec-author.md`. Where `/specclaw:plan` is a batch process, `spec-author` is a blocking, conversational agent that walks the user through `templates/spec.md` one section at a time.
 
 The dialogue follows a fixed order — Overview, Functional Requirements, Non-Functional Requirements, Acceptance Criteria, Edge Cases, Dependencies, Notes — and the agent does not advance to the next section until the user explicitly confirms the current one or says "skip." At the end, after all sections are confirmed, the agent presents a full summary and asks for final approval before writing the file. If the user abandons mid-dialogue, no partial `spec.md` is created.
 
@@ -43,7 +43,7 @@ Naming the technique is not cosmetic — it lets the user know why they're being
 
 ### Challenge Mode
 
-The agent's system prompt (`plugins/specclaw/agents/spec-author.md`, `1179910`) explicitly defines a "challenge mode" that is mandatory, not optional. The agent must push back on:
+The agent's system prompt (`plugins/specclaw/agents/spec-author.md`) explicitly defines a "challenge mode" that is mandatory, not optional. The agent must push back on:
 
 - **Vague terms** — "fast", "easy", "secure", "scalable" are rejected until the user gives a measurable threshold (e.g., "p95 < 200ms").
 - **Untestable acceptance criteria** — every AC must be observable from outside the system: a command output, a file path, a UI state, a log line. "Code is clean" is not an AC.
@@ -55,9 +55,9 @@ If the user insists on vague phrasing after one round of pushback, the agent acc
 
 The feature ships with two ways to reach the agent.
 
-**Standalone: `/specclaw:author-spec <change>`** — defined in `plugins/specclaw/skills/author-spec/SKILL.md` (`1179910`). It validates that `proposal.md` exists, checks whether `spec.md` already exists (prompting to overwrite if so, defaulting to no), invokes the agent, then syncs status and GitHub if configured.
+**Standalone: `/specclaw:author-spec <change>`** — defined in `plugins/specclaw/skills/author-spec/SKILL.md`. It validates that `proposal.md` exists, checks whether `spec.md` already exists (prompting to overwrite if so, defaulting to no), invokes the agent, then syncs status and GitHub if configured.
 
-**Integrated: `/specclaw:plan <change> --author-spec`** — the `--author-spec` flag was added to `plugins/specclaw/skills/plan/SKILL.md` (`1179910`). When present, `plan` delegates the spec step to `spec-author`, **pauses** after the agent writes `spec.md`, and requires explicit user approval ("approved", "yes", "go") before proceeding to generate `design.md` and `tasks.md`. If the user rejects the spec, neither downstream file is created.
+**Integrated: `/specclaw:plan <change> --author-spec`** — the `--author-spec` flag was added to `plugins/specclaw/skills/plan/SKILL.md`. When present, `plan` delegates the spec step to `spec-author`, **pauses** after the agent writes `spec.md`, and requires explicit user approval ("approved", "yes", "go") before proceeding to generate `design.md` and `tasks.md`. If the user rejects the spec, neither downstream file is created.
 
 The key design constraint: **without the flag, `/specclaw:plan` behaves exactly as before** — single-shot, no dialogue. This means `/specclaw:auto` (Specclaw's fully autonomous delivery mode) is unaffected. Interactive spec authoring is strictly opt-in; the automation path stays non-interactive.
 
@@ -67,7 +67,7 @@ The agent runs on Claude Opus — the planning model configured in `config.yaml`
 
 ## The Self-Test
 
-One of the acceptance criteria (`spec.md` AC3, `1179910`) is self-referential: `/specclaw:author-spec spec-author-agent` — running the new agent to author the spec for the change that introduced the agent itself. This served as both a smoke test and a demonstration that the agent could handle the edge case of being invoked on a change with an existing `proposal.md` but no prior `spec.md`. The spec for this very change was produced by the agent as part of its own verification criteria.
+One of the acceptance criteria (`spec.md` AC3) is self-referential: `/specclaw:author-spec spec-author-agent` — running the new agent to author the spec for the change that introduced the agent itself. This served as both a smoke test and a demonstration that the agent could handle the edge case of being invoked on a change with an existing `proposal.md` but no prior `spec.md`. The spec for this very change was produced by the agent as part of its own verification criteria.
 
 ## What Changed in Practice
 
@@ -77,4 +77,4 @@ Thin specs don't just produce bad software. They produce software that satisfies
 
 ---
 
-*Specclaw is an open-source Claude Code plugin. Source: [github.com/chan4lk/specclaw](https://github.com/chan4lk/specclaw). The `spec-author` subagent shipped in commit `1179910` (PR #21).*
+*Specclaw is an open-source Claude Code plugin. Source: [github.com/chan4lk/specclaw](https://github.com/chan4lk/specclaw). The `spec-author` subagent shipped in PR #21.*

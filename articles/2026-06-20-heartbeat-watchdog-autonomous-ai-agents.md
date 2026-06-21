@@ -28,7 +28,7 @@ Each failure mode is detectable from the transcript. Each has a different recove
 
 The core insight: Claude Code writes a detailed `.jsonl` transcript for every session under `~/.claude/projects/<encoded-cwd>/`. This transcript is ground truth — every message, every tool call, every result, in order.
 
-`src/heartbeat.ts` (`classifyChannel()`, commit `9778113`) reads the last 200 entries of the latest transcript and looks for two structural anomalies:
+`src/heartbeat.ts` (`classifyChannel()`) reads the last 200 entries of the latest transcript and looks for two structural anomalies:
 
 ```typescript
 // Tool-incomplete: tool_use with no matching tool_result
@@ -62,7 +62,7 @@ static readonly STUCK_THRESHOLD_MS = 5 * 60_000
 
 A flat 5-minute threshold produced false positives on channels running long parallel-subagent turns — workflows that fan out 10 research agents concurrently and legitimately take 15–20 minutes. The first version killed channels that were genuinely working.
 
-The fix, landed in commit `1f3f976`, was an adaptive threshold:
+The fix was an adaptive threshold:
 
 ```typescript
 const ADAPTIVE_MULTIPLIER = 1.5
@@ -109,11 +109,11 @@ Per-project heartbeat config (PR #46, `fix/heartbeat-watchdog` series):
 }
 ```
 
-`staleAfterMinutes` gates the transcript scanner. The separate per-project `stuckThresholdMinutes` field (PR #43, commit `487420e`) feeds into `ProjectPool` to set the adaptive watchdog base for that channel.
+`staleAfterMinutes` gates the transcript scanner. The separate per-project `stuckThresholdMinutes` field (PR #43) feeds into `ProjectPool` to set the adaptive watchdog base for that channel.
 
 ## What the Fleet Sees
 
-The Mission Control dashboard (PR #55, commit `bf68204`) shows a real-time stall alert panel with the exact reason (`tool-incomplete` or `question-unanswered`) and the relevant snippet — which tool call hung, or what question went unanswered. The Fleet Health Bar (commit `2e5b3d6`) colour-codes every channel as idle, active, stalled, or autonomous.
+The Mission Control dashboard (PR #55) shows a real-time stall alert panel with the exact reason (`tool-incomplete` or `question-unanswered`) and the relevant snippet — which tool call hung, or what question went unanswered. The Fleet Health Bar colour-codes every channel as idle, active, stalled, or autonomous.
 
 This surfaces what was previously invisible: which channels are working and which are silently dead.
 

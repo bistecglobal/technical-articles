@@ -18,7 +18,7 @@ This had a predictable problem: Claude received the entire workflow specificatio
 
 ## The Verb-per-Skill Decomposition (v0.1.0)
 
-Commit `2c80c88` (May 15, 2026) restructured Specclaw as a proper Claude Code plugin. The monolithic `skill/SKILL.md` was decomposed into 15 individual skill files under `plugins/specclaw/skills/<verb>/SKILL.md` (the plugin has since grown to 17 as Azure Boards and spec-author skills were added in later releases):
+The v0.1.0 release restructured Specclaw as a proper Claude Code plugin. The monolithic `skill/SKILL.md` was decomposed into 15 individual skill files under `plugins/specclaw/skills/<verb>/SKILL.md` (the plugin has since grown to 17 as Azure Boards and spec-author skills were added in later releases):
 
 ```
 archive/    auth-azdo/   auth-jira/   auto/    build/
@@ -26,7 +26,7 @@ init/       issue/       learn/       patterns/ plan/
 pr/         propose/     status/      verify/
 ```
 
-At v0.1.0, every skill had `disable-model-invocation: true` in its frontmatter so that specclaw verbs would only fire on explicit user invocation. That changed in v0.2.0 (commit `c045d9d`): the flag was removed from 13 of 15 skills to allow Claude to route conversational utterances to the right verb automatically — "I have a proposal" fires `/specclaw:propose`, "let's plan the feature" fires `/specclaw:plan`. Only `auth-azdo` and `auth-jira` retain the flag, since credential commands should never trigger accidentally. The build skill's 151 lines of wave-loop orchestration are still not loaded during a propose, but that isolation is now achieved by the plugin system's per-skill loading rather than an invocation lock.
+At v0.1.0, every skill had `disable-model-invocation: true` in its frontmatter so that specclaw verbs would only fire on explicit user invocation. That changed in v0.2.0: the flag was removed from 13 of 15 skills to allow Claude to route conversational utterances to the right verb automatically — "I have a proposal" fires `/specclaw:propose`, "let's plan the feature" fires `/specclaw:plan`. Only `auth-azdo` and `auth-jira` retain the flag, since credential commands should never trigger accidentally. The build skill's 151 lines of wave-loop orchestration are still not loaded during a propose, but that isolation is now achieved by the plugin system's per-skill loading rather than an invocation lock.
 
 The 18 shell scripts that power the workflow were moved to `plugins/specclaw/bin/` and renamed from `specclaw-init.sh` to `specclaw-init` — proper PATH-resident executables. Scripts that need to locate plugin-internal resources use `$CLAUDE_PLUGIN_ROOT` with a `BASH_SOURCE`-based fallback: `PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"`. This means the plugin works whether Claude resolves the path via its marketplace install or a developer runs the script directly from a checkout. This matters: a script needs to find its sibling templates and references whether it was installed via the marketplace or run directly from a checkout.
 
@@ -42,13 +42,13 @@ The central design constraint for any Claude Code plugin is that the plugin inst
 
 Specclaw addresses this by writing all change artifacts to `.specclaw/` in the host repository's working directory. The `specclaw-init` script creates this directory structure on first use; every subsequent command reads and writes there. The plugin directory stays generic; the repo accumulates its own history.
 
-This constraint shaped the auto-init feature in v0.2.1 (commit `d5537a5`): rather than requiring explicit initialization before any other command, `specclaw-ensure-init` runs idempotently as the first step of every skill. If `.specclaw/` does not exist yet, it is created automatically using the current directory's basename as the project name. From the user's perspective, `/specclaw:propose` just works on a fresh repo.
+This constraint shaped the auto-init feature in v0.2.1: rather than requiring explicit initialization before any other command, `specclaw-ensure-init` runs idempotently as the first step of every skill. If `.specclaw/` does not exist yet, it is created automatically using the current directory's basename as the project name. From the user's perspective, `/specclaw:propose` just works on a fresh repo.
 
 ## Per-Repo Learning: Knowledge That Grows in Place
 
 The per-repo isolation constraint turned out to enable a meaningful feature. Because `.specclaw/` belongs to the host repo, it can accumulate knowledge that is specific to that codebase — patterns, lessons from past builds, and spec guidelines derived from real failures.
 
-Commit `2d11406` (May 21, 2026) introduced a dedicated knowledge base at `.specclaw/knowledge/`:
+A subsequent release introduced a dedicated knowledge base at `.specclaw/knowledge/`:
 
 - `agent-hints.md` — behavioral rules for coding agents, promoted from recurring patterns and build learnings
 - `spec-guidelines.md` — specification standards derived from past spec gaps and design gaps
@@ -72,7 +72,7 @@ This is knowledge that belongs in the repo — not in the plugin, not in the age
 
 ## Real Tracker Integrations: Azure Boards, GitHub, Jira
 
-A workflow tool without issue tracker integration is an island. Specclaw v0.3.0 (commit `aec77ba`) added symmetric Azure Boards support alongside the existing GitHub Issues and Jira integrations.
+A workflow tool without issue tracker integration is an island. Specclaw v0.3.0 added symmetric Azure Boards support alongside the existing GitHub Issues and Jira integrations.
 
 The implementation — 376 lines in `plugins/specclaw/bin/specclaw-azdo-issue` — targets the ADO REST Work Items API with `create`, `update`, `comment`, `close`, and `link-pr` subcommands. It reuses credentials from `/specclaw:auth-azdo` and is idempotent: re-running `create` for a change that already has a Work Item exits cleanly.
 
