@@ -1,12 +1,6 @@
----
-title: "Circuit Breaker for AI Subprocesses: Cross-Platform Installer and Crash Recovery in MCD"
-project: claude-mcd
-tags: [AI, DevOps, Node.js, Architecture, Resilience]
-status: audited
-date: 2026-06-21
----
-
 # Circuit Breaker for AI Subprocesses: Cross-Platform Installer and Crash Recovery in MCD
+
+*How we applied distributed-systems resilience patterns to an AI fleet orchestration platform — exponential backoff, circuit breakers, and a one-liner cross-platform installer.*
 
 Running a fleet of AI agents simultaneously sounds resilient until one of them crashes in a tight loop at 2 AM, burning through resources and spamming your master channel with failure notifications. This is the problem we solved in [PR #81](https://github.com/chan4lk/claude-multi-channel-discord/pull/81) for MCD (Multi-Channel Discord), our AI fleet orchestration platform.
 
@@ -118,3 +112,11 @@ Before this work, a misconfigured project could crash-loop indefinitely. Now it 
 The installer reduces a multi-step manual setup to a single `curl | bash` or `npx mcd-setup` invocation. Idempotency means it can be safely re-run — useful when updating an existing deployment without a full teardown-reinstall cycle.
 
 Both changes reflect the same underlying principle: AI subprocesses are more failure-prone than typical web services, and the orchestration layer has to compensate with production-grade resilience patterns borrowed from distributed systems — exponential backoff, circuit breakers, and observable state.
+
+---
+
+*Originally published at bistecglobal.com*
+
+---
+
+**BistecGlobal** builds AI-native enterprise software. Follow us for engineering insights.
