@@ -29,6 +29,7 @@ AI-powered spec and proposal generation tool.
 - *Designing for AI-First UX: Lessons from Specclaw* — reducing friction for users interacting primarily through Claude
 - *Packaging a Workflow as a Claude Code Plugin: From Private Tool to Marketplace* — how we took the specclaw spec workflow and published it as a distributable Claude Code plugin, including auto-init, per-repo learning, and Azure Boards integration [commits: `2c80c88` v0.1.0, `2d11406` per-repo knowledge, `aec77ba` Azure Boards] ✅ Published ([bistecglobal/blog#5](https://github.com/bistecglobal/blog/issues/5))
 - *The Spec-Author Subagent: Automating Proposal Writing Within a Planning Workflow* — how `/specclaw:author-spec` spawns a focused subagent to draft the spec document, and how it integrates with the `/specclaw:plan` command via `--author-spec` flag [commit: `1179910`] ✅ Published ([bistecglobal/blog#8](https://github.com/bistecglobal/blog/issues/8))
+- *The Code-Reviewer Subagent: Wiring Automated Code Review into a Spec-Driven Pipeline* — how Specclaw's `/specclaw:verify` now optionally invokes a `code-reviewer` agent that evaluates 10 dimensions (correctness, security, YAGNI, naming, complexity, test quality, design adherence, scope, dead code) with BLOCK/WARN/NOTE severity tagging, opt-in via `workflow.code_review: true` in `config.yaml` [commit: `f972cdc`]
 
 ---
 
@@ -44,6 +45,8 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale ✅ Published ([bistecglobal/blog#2](https://github.com/bistecglobal/blog/issues/2))
 - *Cross-Platform AI: Wiring Claude to Discord, Teams, and WhatsApp* — adapters, credential routing, and session isolation
 - *Cross-Channel Memory: Embedding-Based Shared Context for a Multi-Project AI Fleet* — SQLite + embedding store (`src/memory-store.ts`) that lets agents read and write shared memory across isolated channels, with MCP tools and backup [commit: `02b3a83` PR #47] ✅ Published ([bistecglobal/blog#7](https://github.com/bistecglobal/blog/issues/7))
+- *From Polling to Push: Migrating an AI Fleet Dashboard to Server-Sent Events* — how MCD replaced N×30s REST polls with a single SSE `EventSource` per tab via React context, eliminating redundant requests with 5s server-pushed fleet diffs and exponential backoff reconnect (1s→30s) [commit: `d84461d`]
+- *Circuit Breaker for AI Subprocesses: Cross-Platform Installer and Crash Recovery in MCD* — how MCD ships a platform-native installer (Linux systemd / macOS launchd / Windows Task Scheduler) and a `FailureLedger` circuit breaker that exponentially backs off crashing Claude subprocesses before opening the circuit [commit: `2a86715`]
 
 ---
 
@@ -57,6 +60,7 @@ Core AI infrastructure and shared services for Bistec.
 - *Provider Routing at the Edge: Switching Between Anthropic and MiniMax Without Redeployment* — hot-swap provider pattern with env-level routing
 - *Building a Multi-Provider AI Gateway for Enterprise* — abstracting model APIs behind a unified interface
 - *DRY Principle for AI Skills: Extracting Shared Discipline Skills Across an Enterprise Agent Stack* — how we eliminated coding-standard duplication across four role skills into one canonical shared skill (`bistec-coding-standards`), cutting 166 lines from `bistec-developer` alone [commit: `ca03393` TEC-41] ✅ Published ([bistecglobal/blog#3](https://github.com/bistecglobal/blog/issues/3))
+- *AI-Generated Load Tests: Turning an OpenAPI Spec into a k6 Performance Script* — how the `k6-test-generator` skill interprets an API contract, URL, or plain description and produces a ready-to-run k6 test with realistic scenario, thresholds, and parameterized load stages [commit: `83da7fe`]
 
 ---
 
