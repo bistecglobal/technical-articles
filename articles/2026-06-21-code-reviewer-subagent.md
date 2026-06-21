@@ -22,7 +22,7 @@ The cleaner design is a separate agent with a narrow job.
 
 ## Implementation
 
-The code-reviewer agent is defined at `plugins/specclaw/agents/code-reviewer.md` (commit `f972cdc`, PR [#26](https://github.com/chan4lk/specclaw/pull/26)). Its frontmatter declares it as a Sonnet-class agent with access to Read, Write, and Bash:
+The code-reviewer agent is defined at `plugins/specclaw/agents/code-reviewer.md` (PR [#26](https://github.com/chan4lk/specclaw/pull/26)). Its frontmatter declares it as a Sonnet-class agent with access to Read, Write, and Bash:
 
 ```yaml
 ---
@@ -127,4 +127,4 @@ If `code_review_block: true`, the PR would not have been creatable until the BLO
 
 **Silently skipping is the right default for conditional steps.** Step 3.5 produces no output and no error when disabled. This means the verify skill's observable behaviour is identical to before the change for any project that has not set the flag — an important property when modifying a skill that runs in every automated pipeline.
 
-The code-reviewer subagent is merged to the Specclaw main branch (commit `f972cdc`, PR [#26](https://github.com/chan4lk/specclaw/pull/26)) and available in the current plugin release. Enable it with `workflow.code_review: true` in your `.specclaw/config.yaml`.
+The code-reviewer subagent is merged to the Specclaw main branch (PR [#26](https://github.com/chan4lk/specclaw/pull/26)) and available in the current plugin release. Enable it with `workflow.code_review: true` in your `.specclaw/config.yaml`.

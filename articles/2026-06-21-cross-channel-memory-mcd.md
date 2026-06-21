@@ -22,7 +22,7 @@ The heartbeat watchdog could detect stalls, but it couldn't accumulate intellige
 
 ## The Architecture: SQLite + Local Embeddings + MCP
 
-The solution shipped in [PR #47](https://github.com/chan4lk/claude-multi-channel-discord/pull/47) (commit `02b3a83`, merged 2026-06-20) centers on three new files:
+The solution shipped in [PR #47](https://github.com/chan4lk/claude-multi-channel-discord/pull/47) (merged 2026-06-20) centers on three new files:
 
 **`src/memory-store.ts`** — the core abstraction. A `MemoryStore` class wraps a Bun SQLite database at `$MCD_CHANNELS_DIR/memory.db` with this schema:
 

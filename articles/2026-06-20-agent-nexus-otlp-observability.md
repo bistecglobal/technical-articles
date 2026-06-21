@@ -35,7 +35,7 @@ else if (valueEl.TryGetProperty("intValue", out var iv))
     val = iv.ValueKind == JsonValueKind.String ? iv.GetString() : iv.GetRawText();
 ```
 
-Tenant identity is resolved entirely from each record's `tenant.id` attribute (commit `6ad734a`). The parser validates it as a well-formed GUID and falls back to the dev tenant when absent or malformed — but it never reads `X-Tenant-Id` from the request. This enforces a key invariant: no in-cluster caller can attribute telemetry to an arbitrary tenant by spoofing a header.
+Tenant identity is resolved entirely from each record's `tenant.id` attribute. The parser validates it as a well-formed GUID and falls back to the dev tenant when absent or malformed — but it never reads `X-Tenant-Id` from the request. This enforces a key invariant: no in-cluster caller can attribute telemetry to an arbitrary tenant by spoofing a header.
 
 Cost is computed at ingest time, not asynchronously. The endpoint maintains a model price table covering GPT-4o, GPT-4o-mini, GPT-4 Turbo, and eight Gemini variants (2.5 Pro through 1.5 Flash). Each operational event gets a `CostUsd` field computed from token counts before the record is persisted:
 
@@ -69,9 +69,9 @@ private const decimal ThroughputWeight  = 0.20m;
 
 Two bugs in the original implementation had to be fixed before scores were meaningful.
 
-**Bug 1: CostScore was always 100.** The consumer summed `CostRecords` for the cost dimension, but the ingest path computes cost onto `OperationalEvents.CostUsd` and never writes to the `CostRecords` ledger. The table stayed empty, so `totalCost` was always zero, and `CostEngine.CalculateCostEfficiencyScore(0, threshold)` returns 100. Fix (commit `46e27a5`): source cost directly from `OperationalEvents` aggregated by month — matching the cost summary endpoint.
+**Bug 1: CostScore was always 100.** The consumer summed `CostRecords` for the cost dimension, but the ingest path computes cost onto `OperationalEvents.CostUsd` and never writes to the `CostRecords` ledger. The table stayed empty, so `totalCost` was always zero, and `CostEngine.CalculateCostEfficiencyScore(0, threshold)` returns 100. The fix: source cost directly from `OperationalEvents` aggregated by month — matching the cost summary endpoint.
 
-**Bug 2: Unbounded table growth and duplicate rows under concurrency.** Every telemetry event triggered a recalculation that appended a new `AgentScores` row, so the table grew one row per event. Concurrent recalculations for the same agent could each find `existing == null` and both insert, breaking the one-row-per-agent invariant. Two fixes landed together (commits `4041469` and `46e27a5`):
+**Bug 2: Unbounded table growth and duplicate rows under concurrency.** Every telemetry event triggered a recalculation that appended a new `AgentScores` row, so the table grew one row per event. Concurrent recalculations for the same agent could each find `existing == null` and both insert, breaking the one-row-per-agent invariant. Two fixes landed together:
 
 - **Debounce**: skip the full aggregate scan when the agent's score was updated within the last 30 seconds. Bursts collapse to at most one scan per agent per 30-second window.
 - **Upsert with conflict handling**: a unique index on `(TenantId, AgentId)` enforces one row per agent at the database level. If a concurrent insert wins the race, the loser catches `DbUpdateException`, reloads the winner's row, and applies its computation as an update.
@@ -91,9 +91,9 @@ catch (DbUpdateException)
 
 The tenant isolation story runs across three layers:
 
-**Ingest layer**: `OtlpParser` extracts `tenant.id` from the OTLP record attributes and falls back to the dev tenant — never from an HTTP header (commit `6ad734a`). This means the collector is responsible for stamping the correct tenant, and the ingest endpoint cannot be fooled by a header injection.
+**Ingest layer**: `OtlpParser` extracts `tenant.id` from the OTLP record attributes and falls back to the dev tenant — never from an HTTP header. This means the collector is responsible for stamping the correct tenant, and the ingest endpoint cannot be fooled by a header injection.
 
-**Gateway layer**: The Nexus Gateway resolves the authenticated tenant from the JWT and injects `X-Tenant-Id` downstream to backend services (commit `d40a15e`). Backend services read this header rather than re-validating the token, which keeps auth logic in one place.
+**Gateway layer**: The Nexus Gateway resolves the authenticated tenant from the JWT and injects `X-Tenant-Id` downstream to backend services. Backend services read this header rather than re-validating the token, which keeps auth logic in one place.
 
 **Database layer**: Every entity in `Nexus.Observability` carries a `TenantId` column, and EF Core query filters apply `WHERE TenantId = @tenantId` globally via `TenantContext`. The unique index on `AgentScores(TenantId, AgentId)` ensures one score row per agent per tenant.
 
@@ -113,4 +113,4 @@ The multi-tenant design means a single deployment serves all tenants without dat
 
 **Put tenant identity in the payload, not the header.** Headers are easy to spoof inside a cluster. Stamping `tenant.id` onto each OTLP record at the collector level means tenant identity travels with the data through every processing hop, and the ingest endpoint never needs to trust an ambient header.
 
-The observability pipeline in Agent Nexus is merged to main and deployed via the Azure DevOps CI/CD pipeline (`cd8f1e5`, `e4c820e`), with Playwright e2e tests covering the full ingest-to-score path (`d40a15e`). The source lives at [github.com/chan4lk/agent-nexus](https://github.com/chan4lk/agent-nexus) across commits `6ad734a`, `4041469`, `46e27a5`, and `d40a15e`.
+The observability pipeline in Agent Nexus is merged to main and deployed via the Azure DevOps CI/CD pipeline, with Playwright e2e tests covering the full ingest-to-score path. The source lives at [github.com/chan4lk/agent-nexus](https://github.com/chan4lk/agent-nexus).

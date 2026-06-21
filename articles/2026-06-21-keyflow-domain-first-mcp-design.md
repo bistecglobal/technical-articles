@@ -24,7 +24,7 @@ The deeper problem: our tool boundaries matched our database schema, not our dom
 
 Domain-first MCP design asks a different question: *What does an agent need to accomplish?* rather than *What data does a route return?*
 
-For Keyflow, the domains are clear: recognition, feedback, OKR templates, analytics, objectives, key results, cycles, users. Each became a single MCP tool with an `action` parameter dispatching across operations — `recognition(action='create')`, `recognition(action='list')`. This pattern, visible in `src/app/api/mcp/tools/recognition.ts` (commit `f7161bc`), collapses a scattered endpoint surface into 10 composable tools registered in `src/app/api/mcp/tools/server.ts`.
+For Keyflow, the domains are clear: recognition, feedback, OKR templates, analytics, objectives, key results, cycles, users. Each became a single MCP tool with an `action` parameter dispatching across operations — `recognition(action='create')`, `recognition(action='list')`. This pattern, visible in `src/app/api/mcp/tools/recognition.ts`, collapses a scattered endpoint surface into 10 composable tools registered in `src/app/api/mcp/tools/server.ts`.
 
 ```typescript
 export const RecognitionSchema = z.object({
@@ -99,7 +99,7 @@ The design intent: eliminate the retrieval loop where an agent must ask "what do
 
 As the MCP surface grew, we hit a maintenance problem: business logic was being duplicated between REST route handlers and MCP tool handlers. The cycle activation logic lived in `src/app/api/cycles/[id]/status/route.ts` and was being reimplemented in `src/app/api/mcp/tools/cycle.ts`. When we fixed a bug in one, the other stayed broken.
 
-The service layer refactor (commit `5149b32`, PR #87) extracted shared logic into `src/lib/services/`:
+The service layer refactor (PR #87) extracted shared logic into `src/lib/services/`:
 
 ```
 src/lib/services/
@@ -147,13 +147,13 @@ export async function handleAnalytics(
 }
 ```
 
-The analytics tool (commit `051cdfc`) enforces Manager-or-above for org-wide metrics. The recognition tool requires a user-scoped token for `create` — machine tokens are rejected with an explicit `next_steps` pointing to the OAuth flow. This means agents running with service credentials can read data freely but cannot impersonate users for write operations.
+The analytics tool enforces Manager-or-above for org-wide metrics. The recognition tool requires a user-scoped token for `create` — machine tokens are rejected with an explicit `next_steps` pointing to the OAuth flow. This means agents running with service credentials can read data freely but cannot impersonate users for write operations.
 
 ## What Domain-First Design Delivered
 
 After the redesign, Keyflow's MCP surface comprises 10 composite tools: `cycle`, `objective`, `key_result`, `user`, `report`, `feedback`, `feedback_template`, `recognition`, `okr_template`, and `analytics`. Each maps to a business domain, not a database table or HTTP route.
 
-The OKR template tool (`src/app/api/mcp/tools/template.ts`, commit `051cdfc`) illustrates the approach at its clearest: an agent can `list` templates, `get` one to inspect its KR stubs, and `use` it to create an objective with pre-populated key results — all in a single tool family, with `next_steps` at each stage guiding the agent through the full workflow without external orchestration.
+The OKR template tool (`src/app/api/mcp/tools/template.ts`) illustrates the approach at its clearest: an agent can `list` templates, `get` one to inspect its KR stubs, and `use` it to create an objective with pre-populated key results — all in a single tool family, with `next_steps` at each stage guiding the agent through the full workflow without external orchestration.
 
 The service layer ensures that correctness fixes propagate to both REST and MCP simultaneously. RBAC enforcement at the tool boundary means agents are subject to the same access controls as human users. And flat Zod schemas keep the tools functional across Claude Desktop, Copilot Studio, and any MCP client that parses JSON Schema.
 
@@ -161,4 +161,4 @@ The core lesson: design MCP tools around what agents want to accomplish, not aro
 
 ---
 
-*Keyflow is BistecGlobal's internal OKR and performance management platform. The MCP layer is live in production. Commits referenced: `f7161bc` (recognition tool), `051cdfc` (analytics + template tools), `5149b32` (service layer extraction, PR #87).*
+*Keyflow is BistecGlobal's internal OKR and performance management platform. The MCP layer is live in production.*
