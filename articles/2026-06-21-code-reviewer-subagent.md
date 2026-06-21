@@ -2,7 +2,7 @@
 title: "The Code-Reviewer Subagent: Wiring Automated Code Review into a Spec-Driven Pipeline"
 project: specclaw
 tags: [AI, DevTools, Claude, Code Review, Specclaw, Autonomous Agents]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -90,9 +90,10 @@ A second flag, `workflow.code_review_block`, adds a hard gate to `/specclaw:pr`.
 PR blocked: code review verdict is CHANGES_REQUESTED.
 Fix BLOCK findings in review-report.md then re-run /specclaw:verify.
 
-[BLOCK] src/fleet-compute.ts:42 — Correctness
-Problem: computeStalls() returns stale data when the interval has not yet fired...
-Fix: Return the synchronous computation result directly instead of caching.
+[BLOCK] src/auth-middleware.ts:17 — Correctness
+Problem: token expiry check uses `<` instead of `<=`, allowing tokens that
+         expired exactly at the boundary to pass validation.
+Fix: Change `expiresAt < now` to `expiresAt <= now`.
 ```
 
 Both flags default to `false`. Teams can enable the reviewer without the PR block, treating it as advisory feedback before they decide it's ready to gate merges.
