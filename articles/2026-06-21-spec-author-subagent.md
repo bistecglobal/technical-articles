@@ -2,13 +2,13 @@
 title: "The Spec-Author Subagent: How Specclaw Turns a Proposal into a Testable Spec Through Socratic Dialogue"
 project: specclaw
 tags: [AI, Claude, Developer Tools, Software Engineering, Specification]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
 # The Spec-Author Subagent: How Specclaw Turns a Proposal into a Testable Spec Through Socratic Dialogue
 
-When AI agents write software, the weakest link is usually the specification. Not the code — the spec that drives it. At Bistec, we ran into this problem repeatedly with our Specclaw plugin: the AI would generate requirements in one shot from a short proposal, producing specs that were thin, vague, and riddled with untestable acceptance criteria. Engineers would then spend more time rewriting the spec than it would have taken to write it by hand.
+When AI agents write software, the weakest link is usually the specification. Not the code — the spec that drives it. At Bistec, we ran into this problem repeatedly with our Specclaw plugin: the AI would generate requirements in one shot from a short proposal, producing specs that were thin, vague, and riddled with untestable acceptance criteria. Engineers would end up rewriting the spec by hand before `/specclaw:build` was safe to run.
 
 We solved this by shipping a dedicated `spec-author` subagent (commit `1179910`) — a conversational AI agent that doesn't just fill in a template, but actively challenges requirements, names brainstorming techniques aloud, and refuses to write vague acceptance criteria into the final file.
 
@@ -67,7 +67,7 @@ The agent runs on Claude Opus — the planning model configured in `config.yaml`
 
 ## The Self-Test
 
-One of the acceptance criteria (`spec.md` AC3, `1179910`) is self-referential: `/specclaw:author-spec spec-author-agent` — running the new agent to author the spec for the change that introduced the agent itself. This served as both a smoke test and a demonstration that the agent could handle the edge case of being invoked on a change with an existing `proposal.md` but no prior `spec.md`. The resulting spec (the file you're reading the sourced data from) was authored through this dialogue.
+One of the acceptance criteria (`spec.md` AC3, `1179910`) is self-referential: `/specclaw:author-spec spec-author-agent` — running the new agent to author the spec for the change that introduced the agent itself. This served as both a smoke test and a demonstration that the agent could handle the edge case of being invoked on a change with an existing `proposal.md` but no prior `spec.md`. The spec for this very change was produced by the agent as part of its own verification criteria.
 
 ## What Changed in Practice
 
