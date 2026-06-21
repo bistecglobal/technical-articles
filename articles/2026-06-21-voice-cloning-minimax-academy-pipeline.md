@@ -2,7 +2,7 @@
 title: "Voice Cloning at Scale: MiniMax TTS Backend for AI-Generated Training Content"
 project: academy-videos
 tags: [AI, TTS, VoiceCloning, DevTools, LearningPlatform]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -10,7 +10,7 @@ date: 2026-06-21
 
 When Bistec Academy started producing narrated video content at scale — across four curriculum tracks, up to six months of material each — the bottleneck wasn't the slides or the scripts. It was the voice.
 
-Recording narration manually is linear work. One slide deck takes an afternoon. Twenty-two tracks multiplies that into weeks. The engineering team needed a way to generate narrator audio that matched the trainer's voice, ran without a recording studio, and could be restarted mid-deck when an API request failed. This post covers how they built it.
+Recording narration manually is linear work. One slide deck takes an afternoon. A program spanning twenty-two weeks of curriculum multiplies that into months. The engineering team needed a way to generate narrator audio that matched the trainer's voice, ran without a recording studio, and could be restarted mid-deck when an API request failed. This post covers how they built it.
 
 ## The Pipeline Context
 
@@ -27,7 +27,7 @@ The TTS step — converting `AUDIO-NARRATIVE.md` into per-slide WAV files — wa
 - **Supertonic-3** (`supertonic_to_speech.py`, commit `b963e3d`): 31-language ONNX model, fast but without zero-shot cloning
 - **MLX / Qwen3**: Apple Silicon local inference paths
 
-Each of these had a specific failure mode at scale. Local models that ran on CPU tied up the machine for 20–30 minutes per deck, couldn't run in parallel safely (they competed for cores and RAM), and quality degraded on longer-form content. NeuTTS in particular produced narration that drifted in voice identity across long slide sequences.
+Each of these had a specific failure mode at scale. The earliest local backends (MLX, Qwen3) produced voice clones that drifted in identity across long slide sequences and mispronounced English technical terms — NeuTTS Air (`62e1333`) was added specifically to address this. But all local models shared a deeper problem: they tied up the machine for 20–30 minutes per deck, couldn't run in parallel safely (they competed for cores and RAM), and required a venv-activated local environment to run at all.
 
 The MiniMax backend (commit `6e2ea3a`) moved the heavy work to an API.
 
