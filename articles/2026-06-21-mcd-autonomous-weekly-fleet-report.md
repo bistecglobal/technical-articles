@@ -2,7 +2,7 @@
 title: "Autonomous Weekly Fleet Report: Turning Claude Transcripts into Observability Data"
 project: claude-mcd
 tags: [AI, Observability, AgentOps, DevTools, FleetManagement]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -116,7 +116,7 @@ At a glance, the weekly report answers:
 
 Before this, answering any of these required digging through Discord threads or parsing JSONL files manually. The report endpoint reads the same data Claude Code already writes — no instrumentation changes required, no external observability service to run.
 
-The feature shipped in MCD PR #3e3f957, alongside the Proposal-to-Impact Traceability Matrix (P53), which connects pipeline changes to their git commit counts and line diffs for a complementary view of what agents shipped vs. what they consumed.
+The feature shipped in MCD PR #96 (commit `3e3f957`), alongside the Proposal-to-Impact Traceability Matrix (P53), which connects pipeline changes to their git commit counts and line diffs for a complementary view of what agents shipped vs. what they consumed.
 
 ---
 
