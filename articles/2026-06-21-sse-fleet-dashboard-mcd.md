@@ -2,7 +2,7 @@
 title: "From Polling to Push: Migrating an AI Fleet Dashboard to Server-Sent Events"
 project: claude-mcd
 tags: [AI, DevOps, React, SSE, Architecture, Dashboard]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -14,14 +14,14 @@ When you operate a fleet of 19 AI agents running concurrently across isolated Di
 
 Mission Control is the web-based operator interface for [claude-mcd](https://github.com/chan4lk/claude-multi-channel-discord), Bistec's multi-channel AI orchestration platform. It shows real-time status for every Claude subprocess, flags stalled agents, and provides an event feed of tool invocations across the fleet.
 
-Before commit `d84461d`, four components each ran independent 30-second `setInterval` loops:
+Before commit `d84461d`, two independent 30-second polling loops ran on every dashboard page load:
 
-- **InstanceGrid** — polls `/api/fleet` to render per-agent state chips
-- **FleetHealthBar** — polls `/api/fleet` for aggregate idle/active/stalled/autonomous counts
-- **StallAlertPanel** — polls `/api/stalls` to surface agents that haven't emitted output in a configurable threshold
-- **EventFeed** — polls `/api/events` for the latest tool-call events
+- **DashboardClient** (`page.tsx`) — polled `/api/fleet` every 30 seconds for aggregate fleet health (idle/active/stalled/autonomous counts and per-project state chips)
+- **StallAlertPanel** — polled `/api/stalls` every 30 seconds to surface agents that hadn't emitted output within their stall threshold
 
-Four components × two endpoints × two requests per minute = eight server round-trips per minute, per browser tab. Each request re-reads `channels.json` and the transcript mtime for every project from disk. With a dashboard open across several operators — or with multiple tabs during development — the load compounded linearly.
+Two endpoints × two requests per minute = four server round-trips per minute per browser tab. Each request re-read `channels.json` and the transcript mtime for every project from disk (`computeFleet()` in `src/fleet-compute.ts`). With a dashboard open across several operators — or with multiple tabs during development — the load compounded linearly.
+
+`EventFeed` already used a persistent `EventSource` connection to `/api/events/stream` rather than polling; the `d84461d` change added exponential backoff to its reconnection logic and filtered `fleet-update` and `stall-alert` event types out of its feed (those now route exclusively through `FleetContext`).
 
 Beyond the server cost, the UX problem was worse: a stalled agent could go unnoticed for up to 30 seconds, and there was no visual indicator telling an operator whether the data on screen was fresh or stale.
 
@@ -117,7 +117,7 @@ When SSE reconnects, the component seamlessly switches back to pushed data. Oper
 
 The migration shipped in PR #77 (`345a3de`). With the change live:
 
-- **Request count** dropped from 8 round-trips per minute per tab to a single persistent connection plus one REST fetch on mount.
+- **Request count** dropped from 4 fleet/stall polling round-trips per minute per tab to a single persistent SSE connection plus one REST fetch on mount.
 - **Update latency** dropped from up to 30 seconds to 5 seconds for fleet-state and stall-alert data.
 - **Server disk reads** are amortized — `computeFleet()` runs once every 5 seconds on the server regardless of how many clients are connected, rather than once per poll per component per tab.
 - The budget-alert broadcaster added in the same commit (`checkBudgetAlerts()` in `src/sse.ts`) piggybacks on the same SSE pipe, firing `budget-alert` events when per-project token spend crosses 50%, 80%, or 100% thresholds — with per-threshold, per-month deduplication baked in.
