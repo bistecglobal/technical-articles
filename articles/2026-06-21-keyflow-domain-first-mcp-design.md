@@ -2,7 +2,7 @@
 title: "Domain-First MCP Design: Building OKR Tools That AI Agents Actually Use"
 project: keyflow
 tags: [AI, MCP, OKR, Claude, Copilot Studio, TypeScript, Architecture]
-status: draft
+status: audited
 date: 2026-06-21
 ---
 
@@ -16,7 +16,7 @@ This article documents how we redesigned Keyflow's MCP surface around domain int
 
 Early Keyflow MCP tools mirrored REST endpoints directly: `GET /objectives` became `list_objectives`, `POST /key-results` became `create_key_result`. That seems reasonable until you watch an agent try to recognize a teammate.
 
-To post a peer recognition, an agent had to: (1) look up the receiver's ID, (2) optionally look up the relevant key result ID, (3) create the recognition, (4) verify the notification fired. Each step was a separate tool call, each with its own error handling, and agents frequently got stuck when IDs weren't threaded correctly across calls.
+Peer recognition was entirely absent from the tool surface — the original server exposed only OKR data operations (`get_active_cycle`, `list_objectives`, `create_key_result`). Agents had no way to celebrate a teammate, send feedback, or query analytics, because those domains weren't part of the database tables the tools were built around.
 
 The deeper problem: our tool boundaries matched our database schema, not our domain. An agent doesn't think in tables — it thinks in tasks.
 
@@ -93,7 +93,7 @@ return err(McpErrorCode.NOT_FOUND, `User '${input.receiverId}' not found in this
 });
 ```
 
-In practice, this cut the number of follow-up tool calls needed for agent-driven workflows. When an agent creates a recognition and immediately sees the next logical step in the response, it completes tasks in fewer turns.
+The design intent: eliminate the retrieval loop where an agent must ask "what do I do next?" after every action. Each response carries its own continuation signal.
 
 ## Service Layer: Eliminating REST/MCP Drift
 
