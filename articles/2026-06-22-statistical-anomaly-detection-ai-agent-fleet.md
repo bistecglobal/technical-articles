@@ -2,7 +2,7 @@
 title: "When Your AI Agents Start Behaving Strangely: Statistical Anomaly Detection for Claude Fleets"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Claude, Monitoring]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -94,15 +94,15 @@ The page auto-refreshes every 60 seconds and adds severity filter chips so opera
 
 **No external instrumentation.** The entire feature reads from JSONL files that Claude Code already writes. There's no tracing SDK to integrate, no sidecar to deploy, no schema to migrate. The data is already there — the analysis was the missing piece.
 
-## What We've Caught
+## What It's Designed to Detect
 
-Since deploying the anomaly detector, three categories of events have produced alerts in practice.
+The three behavioral dimensions map to distinct failure modes in autonomous agents.
 
-**Context runaway.** An agent tasked with a large refactor began issuing progressively longer responses as the context window filled — output tokens per turn increased 4× above baseline. The agent wasn't stuck; it was over-explaining. The alert prompted a session reset and a more focused prompt.
+**Context runaway** — output tokens per turn spiking above baseline. As an agent's context window fills, responses can grow longer as the model re-explains prior reasoning or attempts to compensate for context compression. An upward shift in token output is often the earliest detectable symptom, visible before the agent stalls or repeats itself.
 
-**Stall after dependency failure.** One project's agent went quiet for 40 minutes (z-score of 6.4 on inter-turn gap) after an MCP tool dependency timed out. The agent was waiting for a tool result that never arrived. Without the anomaly alert, this would have been discovered at the next manual check-in.
+**Stall after dependency failure** — inter-turn gap climbing above baseline. When an MCP tool times out or a subprocess hangs, the agent stops producing turns. A sustained silence that exceeds 2–3 standard deviations from the project's normal cadence surfaces as a high-severity anomaly on the inter-turn gap metric.
 
-**Exploration spiral.** A planning agent started making 8–12 tool calls per turn — roughly 4× its normal rate — after receiving an ambiguous inject. It was looping through file reads and searches without converging. The alert caught it within three turns.
+**Exploration spiral** — tool calls per turn rising above baseline. A planning agent handed an ambiguous task may loop through repeated file reads and searches without converging. The tool call rate is the signal: if the agent is making significantly more tool calls per turn than its own baseline, it is likely iterating without progress rather than executing.
 
 ## Where This Sits in the Observability Stack
 
