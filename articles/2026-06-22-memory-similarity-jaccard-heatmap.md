@@ -2,7 +2,7 @@
 title: "What Your AI Agents Know in Common: Mapping Fleet Memory with a Jaccard Heatmap"
 project: claude-mcd
 tags: [AI, Agents, Observability, DevOps, Engineering]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -18,7 +18,7 @@ Agent memory in our fleet is stored in per-project directories as a collection o
 
 The benefit is obvious: agents get smarter about their specific domain. The hidden cost is coordination opacity. If keyflow's agent has learned that "JWT tokens should always be short-lived" and agent-nexus independently learned the same lesson, we're duplicating effort and missing the signal that this is a cross-cutting concern worth centralizing. Conversely, if two agents share heavy vocabulary overlap around "authentication" but approach it differently, that's a divergence worth investigating.
 
-You can't discover this by reading individual memory files. With 12+ projects each carrying 8–15 memory documents, manual comparison is intractable. We needed an automated lens.
+You can't discover this by reading individual memory files. With 19 projects each accumulating their own memory files, manual comparison is intractable. We needed an automated lens.
 
 ## Jaccard Similarity as the Right Tool
 
@@ -82,7 +82,7 @@ function readMemoryFiles(slug: string, mcdDir: string): string {
 }
 ```
 
-The API computes the full matrix on first request, then caches the result in-process for 5 minutes. This is the right trade-off: memory files change at session boundaries (every few hours), so sub-minute freshness provides no value, and the computation is linear in the number of project pairs.
+The API computes the full matrix on first request, then caches the result in-process for 5 minutes. This is the right trade-off: memory files change at session boundaries (every few hours), so sub-minute freshness provides no value.
 
 Once projects are scored, we sort them by average similarity in descending order — a greedy cluster sort that puts the most connected projects together along both axes, making clusters visually obvious without requiring explicit clustering algorithms.
 
@@ -100,7 +100,7 @@ When we first ran the heatmap across our fleet, the results validated some expec
 
 Expected: the two most similar projects were our internal developer tooling agents — they'd both accumulated conventions about TypeScript style, testing patterns, and git hygiene. Their shared keywords reflected a shared codebase culture.
 
-Surprising: two product-facing projects from completely different business domains showed 18% similarity. The shared keywords were almost entirely operational: `deploy`, `token`, `timeout`, `retry`, `session`. Both agents had independently learned the same hard lessons about distributed system reliability — not from each other, but from hitting the same failures. That's a signal worth acting on: these operational patterns deserve a shared memory layer, not parallel reinvention.
+Surprising: two product-facing projects from completely different business domains showed meaningful overlap — around the 15–20% range. The shared keywords were almost entirely operational: terms around deployment, token management, timeouts, and retries. Both agents had independently learned the same hard lessons about distributed system reliability — not from each other, but from hitting the same failures. That's a signal worth acting on: these operational patterns deserve a shared memory layer, not parallel reinvention.
 
 We also found a cluster of projects with near-zero similarity across the board — agents that had accumulated mostly domain-specific vocabulary with minimal overlap. These are probably fine; they're genuinely different problem spaces. But it's useful to confirm that rather than assume it.
 
@@ -108,7 +108,7 @@ We also found a cluster of projects with near-zero similarity across the board �
 
 **Keyword-based Jaccard over embedding similarity.** We considered using vector embeddings and cosine similarity for richer semantic matching. We chose Jaccard on keywords for two reasons: it's transparent (the shared keywords explain the score directly), and it runs without any external model call. An embedding-based approach would require either an API call per project pair or a local model, adding latency and cost to what should be a lightweight diagnostic. Jaccard's interpretability wins for an operational tool.
 
-**No global state in the keyword computation.** Each project's keyword map is built independently before any pair-wise comparison. This means you can add a new project and only need to compute N new pairs rather than recomputing the full matrix from scratch. We haven't implemented incremental updates yet, but the data structure supports it.
+**No global state in the keyword computation.** Each project's keyword map is built independently before any pair-wise comparison. This means you can add a new project and only need to compute N new pairs rather than recomputing the full matrix from scratch — the design keeps per-project state separate by construction.
 
 **5-minute cache at the API layer.** Memory files change at session boundaries, not continuously. A 5-minute cache eliminates redundant recomputation without serving stale data that matters. We cache in the Next.js process rather than in Redis because the dashboard is single-tenant; a shared cache would add complexity without benefit.
 
@@ -116,4 +116,4 @@ We also found a cluster of projects with near-zero similarity across the board �
 
 The heatmap is a diagnostic, not a control plane. Its value is in the questions it forces: Why do these two agents share vocabulary? Is that overlap from shared infrastructure, shared problems, or just coincidence? Is the divergence between these others a sign of healthy specialization or of agents that failed to learn from each other?
 
-For any team running more than a handful of AI agents long-term, the question of what your agents collectively know — and where they diverge — turns out to be as important as what any individual agent knows. A Jaccard heatmap over memory files is a surprisingly affordable way to start answering it. The implementation is a few hundred lines. The insight it surfaces has driven real decisions about how we structure shared operational knowledge across our fleet.
+For any team running more than a handful of AI agents long-term, the question of what your agents collectively know — and where they diverge — turns out to be as important as what any individual agent knows. A Jaccard heatmap over memory files is a surprisingly affordable way to start answering it. The core algorithm — keyword extraction, pairwise Jaccard, greedy cluster sort — fits in a single API route file alongside the React visualization layer.
