@@ -1,14 +1,14 @@
 ---
-title: "Adding a Third Cloud to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction"
+title: "Adding a Second Connector to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction"
 project: agent-nexus
 tags: [AI, Google Cloud, Vertex AI, Multi-Cloud, Observability, .NET, Enterprise]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
-# Adding a Third Cloud to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction
+# Adding a Second Connector to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction
 
-We assumed adding a third cloud would be straightforward. Agent Nexus already governed agents on Microsoft Copilot Studio and Amazon Bedrock behind a common `IPlatformConnector` interface. Adding Vertex AI was, in theory, just another implementation. In practice, three cracks appeared in our design that we hadn't noticed with just two platforms. Here's what we found — and what the third integration taught us about building multi-cloud agent governance.
+We assumed adding Vertex AI would be straightforward. Agent Nexus already governed agents on Microsoft Copilot Studio behind a common `IPlatformConnector` interface. Adding Google's platform was, in theory, just another implementation. In practice, three cracks appeared in our design that the first connector never surfaced. Here's what we found — and what the second integration taught us about building multi-cloud agent governance.
 
 ## The Setup: One Interface, Many Clouds
 
@@ -18,9 +18,9 @@ Adding Vertex AI meant writing one class: `VertexAiConnector`. Everything else �
 
 ## Crack 1: Whose Credentials Are These?
 
-Our first Copilot Studio connector used a single Azure service principal stored as a platform-level secret. When we added Bedrock, we used AWS IAM roles, similarly scoped to the host environment. When we got to Vertex AI, the same pattern would have meant storing a GCP service account key that all tenants shared — which is obviously wrong for a multi-tenant platform.
+The initial `VertexAiConnector` took the quick path: it called `GoogleCredential.GetApplicationDefaultAsync()` — the host Application Default Credentials. That worked in local development, where the developer's ADC had access to a test GCP project. It broke in multi-tenant production: every tenant's discovery ran as the host identity, surfacing the dev project's agents under whichever tenant connection happened to be syncing.
 
-The Vertex AI connector had to use *each tenant's own GCP credentials*, not host ADC. The implementation resolves them from Infisical using the connection's `SecretRef`:
+Copilot Studio had handled this correctly from the start, resolving per-tenant Microsoft credentials from Infisical via each connection's `SecretRef`. The Vertex AI connector needed the same treatment: *each tenant's own GCP credentials*, loaded at sync time, never shared. The implementation:
 
 ```csharp
 private async Task<string> ResolveCredentialsJsonAsync(string secretRef, CancellationToken ct)
@@ -39,7 +39,7 @@ private async Task<string> ResolveCredentialsJsonAsync(string secretRef, Cancell
 
 The credential JSON — a GCP service account key or authorized user file — is loaded per-connection at sync time. `Google.Apis.Auth` exchanges it for a short-lived OAuth token scoped to `https://www.googleapis.com/auth/cloud-platform`, then we hit the Vertex AI `reasoningEngines` API. No shared ADC, no cross-tenant bleed.
 
-This forced us to revisit our earlier connectors. Copilot Studio was fine — it already used per-tenant credentials via Azure. Bedrock was using ambient IAM, which worked only because we happened to be single-tenant there. Multi-cloud governance means *each cloud, each tenant, separate credentials, always*.
+The lesson generalised: any connector that relies on host-level credentials is a latent multi-tenancy bug. Multi-cloud agent governance means *each cloud, each tenant, separate credentials, always* — and that invariant must be enforced at the connector layer, not assumed.
 
 ## Crack 2: Self-Healing or Just Masking Failures?
 
@@ -72,7 +72,7 @@ else
 }
 ```
 
-This distinction matters in production: retry logic that can't tell a transient network error from a permanent auth failure will either flood the API or silently stall. The three-status model (`connected` / `error` / `needs_reauth`) is now something we'll apply to all future platform connectors.
+This distinction matters in production: retry logic that can't tell a transient network error from a permanent auth failure will either flood the API or silently stall. The three-status model (`connected` / `error` / `needs_reauth`) is a pattern worth applying to every platform connector that authenticates with external credentials.
 
 ## Crack 3: Cost Numbers Were Wrong for Gemini
 
@@ -86,7 +86,7 @@ CostUsd = (decimal)ComputeCost(record.Platform, input, output),
 CostUsd = (decimal)ComputeCost(record.Model, input, output),
 ```
 
-This bug existed from day one but went undetected because our first two platforms (Copilot Studio, Bedrock) used model names that happened to match nothing in the price table either — the fallback GPT-4o price was used for everything. Adding Vertex AI with explicit Gemini model names exposed it.
+This bug existed from day one but went undetected because Copilot Studio agents typically ran on GPT-4o — which happened to be the fallback price too. The erroneous lookup key ("copilot_studio") fell back to GPT-4o pricing, accidentally correct. Vertex AI events made the error undeniable: Gemini 2.0 Flash is priced at $0.0001/$0.0004 per 1k tokens versus GPT-4o's $0.005/$0.015 — a 50× difference that showed up immediately in cost dashboards.
 
 The cost summary endpoint also needed fixing. It was reading from a `CostRecords` ledger that was populated manually (and often not at all). We replaced it with a live aggregation over `OperationalEvents.CostUsd` grouped by platform and model — actual spend derived from actual token usage, not a parallel ledger that drifted from reality.
 
@@ -94,16 +94,16 @@ The cost summary endpoint also needed fixing. It was reading from a `CostRecords
 
 Adding a second cloud to an abstraction tells you if the interface holds. Adding a third tells you if the *assumptions behind* the interface hold.
 
-With Copilot Studio and Bedrock, we had implicitly assumed:
-- Credentials could be scoped at the platform level
-- Failed connections didn't need periodic retry
-- Model-based pricing was stable enough that an early bug didn't matter
+With only Copilot Studio, we had implicitly assumed:
+- Host-level credentials were an acceptable shortcut for new connectors
+- Failed connections didn't need periodic retry — they'd surface as user complaints
+- Model-based pricing was consistent enough that an early implementation detail didn't matter
 
-None of those assumptions survived Vertex AI. The credentials assumption was wrong by design (multi-tenancy requires per-tenant credential isolation). The retry assumption was wrong by omission (the scheduler query simply hadn't considered error recovery). The pricing assumption was a latent bug that only surfaced when real model-named events arrived.
+None of those assumptions survived Vertex AI. The credentials assumption was a security flaw (host ADC exposed one tenant's agents to another's discovery). The retry assumption was wrong by omission (the scheduler query simply hadn't considered error recovery). The pricing assumption was a latent bug that only surfaced when Gemini model names diverged significantly in cost from the GPT-4o fallback.
 
-The Vertex AI integration is in production and discovering Vertex AI Reasoning Engine agents alongside Copilot Studio and Bedrock agents in a single normalized view. But the more durable output is the hardened abstraction: a credential model that enforces tenant isolation at the secret-resolution layer, a connection lifecycle that handles both transient failures and permanent auth expiry, and a cost engine that reads from actual telemetry rather than a secondary ledger.
+The Vertex AI integration is in production, discovering Vertex AI Reasoning Engine agents alongside Copilot Studio agents in a single normalized view. But the more durable output is the hardened abstraction: a credential model that enforces tenant isolation at the secret-resolution layer, a connection lifecycle that handles both transient failures and permanent auth expiry, and a cost engine that reads from actual telemetry rather than a secondary ledger.
 
-A third integration stress-tests your architecture in ways the first two never could. If you're building multi-cloud infrastructure, plan for it.
+A second integration stress-tests your architecture in ways the first never could. If you're building multi-cloud infrastructure, plan for it.
 
 ---
 
