@@ -2,7 +2,7 @@
 title: "Your AI Fleet's Black Box: Point-in-Time Snapshots and Alert History for Mission Control"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Autonomous Agents, Engineering]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -14,7 +14,7 @@ We've been running 19+ Claude Code agents continuously through Mission Control, 
 
 ## The Gap Live Dashboards Can't Fill
 
-Mission Control already had strong real-time visibility: SSE-pushed fleet diffs, stall detection every 30 seconds, budget alerts at 50/80/100% thresholds. All of it ephemeral. Once a project transitioned from `stalled` back to `active`, the stall was gone from the UI. If three agents hit their budget ceiling between midnight and 6 AM, you'd never know unless you happened to be watching.
+Mission Control already had strong real-time visibility: SSE-pushed fleet diffs, stall detection every 5 seconds, budget alerts at 50/80/100% thresholds. All of it ephemeral. Once a project transitioned from `stalled` back to `active`, the stall was gone from the UI. If three agents hit their budget ceiling between midnight and 6 AM, you'd never know unless you happened to be watching.
 
 Real observability requires two things: *snapshots* (what was the state at point T?) and *audit trails* (what events occurred between T₁ and T₂?). Traditional APM tools give you both for infrastructure. We had neither for our agent fleet.
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS alert_events (
 );
 ```
 
-Alert types in our fleet are `stall`, `budget`, `watchdog`, and `inject`. Each is written to the table at the moment it fires — stall and budget alerts from the SSE broadcaster that already drives real-time push, inject events from the `/api/inject` endpoint that manually resumes a stalled agent. The connection point is a single `insertAlertEvent()` call wired into the existing event paths:
+Alert types in our fleet are `stall`, `budget`, and `inject`. Each is written to the table at the moment it fires — stall and budget alerts from the SSE broadcaster that already drives real-time push, inject events from the `/api/inject` endpoint that manually resumes a stalled agent. The connection point is a single `insertAlertEvent()` call wired into the existing event paths:
 
 ```typescript
 // Inside the SSE broadcaster's stall-check loop
@@ -89,7 +89,7 @@ Neither of these insights was available from the live dashboard. Both were immed
 
 Live dashboards are for triage. Historical records are for understanding. We keep treating agent fleet management like it's Kubernetes — where a pod restart is atomic and recoverable and you mostly care about right-now. But a Claude Code agent session carries weeks of context, memory distillations, and goal state. When something goes wrong, "what happened and when" matters as much as "what's broken now."
 
-Snapshots and alert history are a small addition to Mission Control — two new SQLite tables, two new pages, roughly 700 lines of code across the stack. But they're the difference between operating blind and having a black box you can actually open.
+Snapshots and alert history are a small addition to Mission Control — two new SQLite tables, two new pages, close to 900 lines of code across the stack. But they're the difference between operating blind and having a black box you can actually open.
 
 If you're running autonomous agents at any scale, instrument the history early. You'll need it sooner than you think.
 
