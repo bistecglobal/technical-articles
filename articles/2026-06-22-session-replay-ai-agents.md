@@ -2,7 +2,7 @@
 title: "When Your AI Agent Goes Wrong, You Have a JSONL File. We Built a Debugger."
 project: claude-mcd
 tags: [AI, debugging, observability, developer-tooling, claude-code, devops]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
