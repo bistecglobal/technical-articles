@@ -40,6 +40,7 @@ AI-powered spec and proposal generation tool.
 Multi-project AI agent orchestration platform over Discord and Teams.
 
 **Article ideas:**
+- *Multi-Signal Fleet Topology: Connecting AI Agents by Memory and Goals* — how MCD's topology extended beyond transcript cross-references to Jaccard similarity of MEMORY.md/GOAL.md keywords and shared git remotes, plus Fleet Digest for per-project health aggregation [commits: `ddd8004`, `76755c8`] ✅ Published ([bistecglobal/blog#29](https://github.com/bistecglobal/blog/issues/29))
 - *One Bot, Many Agents: Architecting a Multi-Channel AI Fleet* — how MCD isolates one Claude subprocess per Discord channel
 - *Building a Mission Control for AI Agents* — neon graph UI, stall detection, autonomous heartbeat inject
 - *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale ✅ Published ([bistecglobal/blog#2](https://github.com/bistecglobal/blog/issues/2))
