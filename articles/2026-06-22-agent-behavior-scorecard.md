@@ -2,7 +2,7 @@
 title: "The Agent Behavior Scorecard: Measuring Tool-Call Efficiency Across an AI Fleet"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agent Engineering, Developer Tooling]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -18,7 +18,7 @@ Tokens and latency measure *how much* an agent does. They say nothing about *how
 
 An agent can burn 200K tokens in a day two very different ways. In the first scenario, it reads 40 files, writes a comprehensive spec, opens a PR, and runs tests — each tool call producing a burst of meaningful output. In the second, it reads the same three files 30 times, calls a search tool repeatedly with slight variations, and produces modest results. Same token count. Wildly different behavior.
 
-With a single agent, you notice this by watching transcripts. With 19 agents running simultaneously across projects — each operating autonomously, injecting its own heartbeat messages, managing its own backlog — transcript watching doesn't scale. You need a signal that summarizes behavioral quality at a glance.
+With a single agent, you notice this by watching transcripts. With agents across the full fleet — each operating autonomously, injecting its own heartbeat messages, managing its own backlog — transcript watching doesn't scale. You need a signal that summarizes behavioral quality at a glance.
 
 That signal is tool-call efficiency.
 
@@ -49,9 +49,9 @@ Two supporting stats sit beside the gauge: average tool calls per turn and avera
 
 Once we had the scorecard running across the fleet, a few patterns became visible immediately.
 
-Projects with long-running autonomous tasks — agents working through backlogs, implementing specs across multiple files — tend to cluster in the 65–85 range. They read context, then write substantial output: code, commits, documentation. The ratio holds because each tool call has a clear purpose.
+Projects with long-running autonomous tasks — agents working through backlogs, implementing specs across multiple files — tend to score in the 65–85 range — the metric's expected shape for this work pattern. They read context, then write substantial output: code, commits, documentation. The ratio holds because each tool call has a clear purpose.
 
-Projects in exploration mode — researching a topic, mapping a codebase, generating proposals — often score lower (40–60). This is expected and fine. A research phase involves many reads and searches that produce modest immediate output. Knowing this is *expected* behavior is itself useful; a 55 score during a research phase is healthy, where a 55 score during a known implementation phase is worth investigating.
+Projects in exploration mode — researching a topic, mapping a codebase, generating proposals — tend toward the 40–60 range. This is expected and fine. A research phase involves many reads and searches that produce modest immediate output. Knowing this is *expected* behavior is itself useful; a 55 score during a research phase is healthy, where a 55 score during a known implementation phase is worth investigating.
 
 The clearest red flags are scores below 30 combined with a high call count and modest output per turn — the signature of an agent that has lost its thread. It's reading the same context repeatedly, calling search tools in loops, not committing to an action. Before the scorecard, this would show up as unexpectedly high token spend with little to show for it. Now it's visible in the behavior signal before the bill arrives.
 
@@ -65,4 +65,4 @@ The clearest red flags are scores below 30 combined with a high call count and m
 
 Observability for AI agents is still a young discipline. Most of what exists borrows from infrastructure monitoring: cost, latency, uptime. Those metrics matter, but agents are different from services. They make decisions. They choose which tools to call and in what order. The behavioral layer — what an agent actually does with the context and tools it's given — is where the interesting signal lives.
 
-The scorecard is one slice of that layer. We're still mapping the rest.
+The scorecard is one slice of that layer — and the transcripts hold more signal than we've yet pulled out of them.
