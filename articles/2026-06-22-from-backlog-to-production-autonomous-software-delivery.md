@@ -2,13 +2,13 @@
 title: "From BACKLOG.md to Production: Autonomous Software Delivery at Bistec"
 project: keyflow
 tags: [AI, autonomous-agents, software-delivery, claude-code, specclaw, devops]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
 # From BACKLOG.md to Production: Autonomous Software Delivery at Bistec
 
-In six months of active development, keyflow — Bistec's OKR and performance management platform — shipped 83 features without a single manually driven development cycle. Each feature went from a backlog entry to a merged pull request through an unattended loop: a scheduler fired, an agent picked up the task, implemented it wave by wave, opened a PR, and added new proposals before signing off. Here is how that loop works.
+In three months of active development, keyflow — Bistec's OKR and performance management platform — shipped 83 features almost entirely through autonomous cycles. Each feature went from a backlog entry to a merged pull request through an unattended loop: a scheduler fired, an agent picked up the task, implemented it wave by wave, opened a PR, and added new proposals before signing off. Here is how that loop works.
 
 ## The Problem: Backlogs Stall Without Humans to Drive Them
 
@@ -42,11 +42,11 @@ propose → plan → build → verify → pr
 
 `workflow.strict: true` ensures no phase can be skipped. `code_review: true` and `code_review_block: true` mean a code-reviewer agent evaluates 10 quality dimensions during verify, and blocks the PR step on a `CHANGES_REQUESTED` verdict.
 
-The build phase decomposes the spec into waves. Each wave is a set of tasks that can be executed in parallel (up to `parallel_tasks: 3`). For `cycle-status-visual-cues`, wave 1 created the shared `CycleStatusBadge` component; wave 2 wired it into four pages. The implementation commits follow a consistent `specclaw(<slug>): T<N> — <description>` pattern (e.g., commit `0859719` through `904b663` in the keyflow repo).
+The build phase decomposes the spec into waves. Each wave is a set of tasks that can be executed in parallel (up to `parallel_tasks: 3`). For `cycle-status-visual-cues`, wave 1 created the shared `CycleStatusBadge` component; wave 2 wired it into two pages. The implementation commits follow a consistent `specclaw(<slug>): T<N> — <description>` pattern (e.g., commit `0859719` through `904b663` in the keyflow repo).
 
 ### 3. MCD Scheduler: The Heartbeat
 
-The glue is MCD's `Scheduler` class (`src/scheduler.ts`, commit `15b8268`). It ticks every 60 seconds, walks a `schedules.json` table, and fires any entry that is due. Firing means delivering a synthetic Discord-shaped envelope directly into the keyflow project channel — the same code path a real operator message takes.
+The glue is MCD's `Scheduler` class (`src/scheduler.ts`, introduced in commit `e99a5cd`). It ticks every 60 seconds, walks a `schedules.json` table, and fires any entry that is due. Firing means delivering a synthetic Discord-shaped envelope directly into the keyflow project channel — the same code path a real operator message takes.
 
 ```typescript
 private envelopeFor(s: Schedule, now: Date): InboundEnvelope {
@@ -86,7 +86,7 @@ The keyflow CLAUDE.md enforces one safety gate that keeps this from going off th
 
 **Wave decomposition controls parallelism, not just sequencing.** The wave structure in `tasks.md` is the engineer's primary design artefact. Getting wave boundaries right determines whether tasks can run in parallel and whether dependencies are respected.
 
-**The scheduler is the simplest possible orchestrator.** MCD's `Scheduler` is 140 lines of TypeScript. It does not need to know about Specclaw, about keyflow, or about Claude. It fires a string into a channel at a time. Everything else is handled by the agent that receives it. This separation is what makes the system composable across different projects with different workflows.
+**The scheduler is the simplest possible orchestrator.** MCD's `Scheduler` is ~170 lines of TypeScript. It does not need to know about Specclaw, about keyflow, or about Claude. It fires a string into a channel at a time. Everything else is handled by the agent that receives it. This separation is what makes the system composable across different projects with different workflows.
 
 **Self-regeneration keeps the backlog meaningful.** Ending each session by proposing new work shifts the backlog from a static TODO list to a live signal. The proposals that get generated after a feature lands tend to be more targeted than those written up front, because they reflect what the implementation revealed.
 
