@@ -52,6 +52,10 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Cross-Session Memory Distillation: Auto-Condensing Agent History on Session End* — how MCD's `distillation.ts` runs `claude -p` with 90s timeout + one retry after each session kill (`--distill-on-stop` flag), wires audit trail emission on completion, and surfaces distillation status in `!project show` [commit `feb0ed6` PR #83] ✅ Published ([bistecglobal/blog#17](https://github.com/bistecglobal/blog/issues/17))
 - *Autonomous Goal Persistence: Injecting Project Goals into Every Claude Session* — how MCD writes a `GOAL.md` per project (max 500 chars, set via `!project set --goal`) and injects it as the opening message of every new session through `formatPrompt()`, keeping long-running agents on task across context resets [commit `feb0ed6` PR #83] ✅ Published ([bistecglobal/blog#19](https://github.com/bistecglobal/blog/issues/19))
 - *Token Budget Enforcement for AI Agent Fleets: SSE Alerts, Queue Drain, and Monthly Rollover* — how MCD enforces per-project monthly token budgets: SSE `budget-alert` events at 50/80/100%, Discord master-channel notifications, inbound message queue when exhausted, UTC month-rollover drain with `budget-restored` event [commit `17a0f12` PR #84] ✅ Published ([bistecglobal/blog#16](https://github.com/bistecglobal/blog/issues/16))
+- *Session Replay for AI Agents: Step-Through JSONL Debugging in MCD* — how MCD's `/replay` page parses Claude Code JSONL transcripts into `ReplayTurn` objects and renders them with turn counter, collapsible tool call rows, line-level diff vs the prior turn, timeline scrubber, and 3s/turn auto-play — making agent session debugging a visual, interactive experience [commit `eb98aa9`]
+- *Cross-Project Memory Similarity: A Jaccard Heatmap for Your AI Agent Fleet* — how MCD's `/similarity` page computes an N×N overlap matrix from per-project memory markdown files using Jaccard similarity on extracted keyword sets, with threshold slider, greedy cluster sort, and a 5-min cached `/api/similarity` endpoint [commit `0b5ffb3`]
+- *Fleet State Snapshots and Alert History: Point-in-Time Observability for AI Agent Fleets* — how MCD stores labeled fleet snapshots in SQLite and renders an A/B diff view (added/removed/changed projects with state and token deltas), alongside a unified alert event log with type/slug filtering and 30-day auto-purge [commit `5cd1c48`]
+- *Agent Behavior Scorecard: Measuring Tool-Call Efficiency Across an AI Fleet* — how MCD extends its metrics API with per-agent toolStats (top tools by call count, avg calls/turn, avg output tokens/turn, efficiency score 0-100) and renders a collapsible ScoreCard with horizontal bar chart in the fleet dashboard [commit `d9b4814`]
 
 ---
 
@@ -79,6 +83,8 @@ Multi-tenant cloud control plane for building, deploying, and governing AI agent
 - *Multi-Tenant AI Agent Governance: What We Learned Building Agent Nexus* — policy enforcement, quota management, and audit trails across platforms
 - *Unifying AI Agents Across Azure, AWS, and GCP: Architecture Patterns* — adapters, normalisation, and cross-cloud observability
 - *AI Agent Observability with OTLP: Real-Time AgentScore, Cost Tracking, and Multi-Tenant Ingest* — how Agent Nexus ingests OpenTelemetry traces from Copilot Studio / Bedrock / Vertex agents, assigns per-agent scores, tracks live cost dimensions, and gates on tenant ID [commits: `46e27a5`, `4041469`, `6ad734a`, `d40a15e`] ✅ Published ([bistecglobal/blog#4](https://github.com/bistecglobal/blog/issues/4))
+- *Two-Tier Auth for Multi-Platform AI Agent Governance: Developer vs Tenant Credentials in Agent Nexus* — how Agent Nexus implements a `CredentialTier` enum (None / Developer / Tenant) parsed from Zitadel project-role JWT claims, gates `ConnectionEndpoints` per tier returning 403 on underqualified requests, and wires Infisical two-tier config and Zitadel Cloud role assertion across 14 specclaw tasks [commits: `d41ba41` through `d40a15e`]
+- *Adding a Third Cloud: Vertex AI Agent Discovery and Token-Based Cost in Agent Nexus* — how Agent Nexus extended its multi-cloud observability to Vertex AI: discover agents using tenant Vertex credentials (not host ADC), ingest telemetry, and compute token-based cost alongside Copilot Studio and Bedrock [commit `16ffdeb`]
 
 ---
 
@@ -152,4 +158,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-21 (ideate scan) | Maintained by bistec-articles agent*
+*Updated: 2026-06-22 (ideate scan) | Maintained by bistec-articles agent*
