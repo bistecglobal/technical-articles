@@ -18,10 +18,10 @@ Parse every factual claim in the article — anything stated as true about the s
 
 For each claim:
 1. Identify the project and feature it refers to.
-2. Find confirming evidence: commit SHA, file path, merged PR, or measured metric.
+2. Find confirming evidence by reading the source: actual code files, merged PR details, commit history, or measured metric. Evidence is internal (for the audit record) — it does NOT need to appear in the article prose as commit SHAs or PR numbers.
 3. Mark: ✅ verified | ⚠️ weak (indirect evidence) | ❌ unverified / speculative
 
-If a claim is ❌: flag it for removal or rewrite with a concrete reference.
+If a claim is ❌: flag it for removal or rewrite using verifiable but reader-friendly language (e.g. "the scheduler module", "our metrics endpoint") — not raw SHAs.
 
 ## Step 4 — Forward-looking scan
 
@@ -33,7 +33,7 @@ Score the article on five dimensions (1–5 each):
 
 | Dimension | Score | Notes |
 |---|---|---|
-| Evidence quality (claims cited) | | |
+| Evidence quality (claims verifiable, no raw SHAs in prose) | | |
 | Technical depth | | |
 | Clarity for target audience | | |
 | BistecGlobal voice | | |
