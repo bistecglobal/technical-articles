@@ -2,7 +2,7 @@
 title: "Adding a Third Cloud: How We Extended Agent Nexus to Govern Vertex AI Agents"
 project: agent-nexus
 tags: [AI, multi-cloud, GCP, Vertex AI, observability, DevOps]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -10,7 +10,7 @@ date: 2026-06-22
 
 You can't govern what you can't see. That was the problem staring us down when a customer asked why their Google Vertex AI agents weren't showing up on the Agent Nexus dashboard alongside their Azure Copilot Studio deployments.
 
-We had built Agent Nexus to give engineering teams a single control plane for AI agents across cloud platforms — score them, track their cost, enforce governance policies. We had Copilot Studio. We were ingesting Bedrock telemetry. But Vertex AI, Google's production runtime for agents built with the Agent Development Kit, was a gap. Customers building on Google Cloud couldn't see their agents' latency, couldn't track token spend by Gemini model, and couldn't get reliability scores alongside their Azure counterparts.
+We had built Agent Nexus to give engineering teams a single control plane for AI agents across cloud platforms — score them, track their cost, enforce governance policies. We had Copilot Studio connected and agents syncing. But Vertex AI, Google's production runtime for agents built with the Agent Development Kit, was a gap. Customers building on Google Cloud couldn't see their agents' latency, couldn't track token spend by Gemini model, and couldn't get reliability scores alongside their Azure counterparts.
 
 Closing that gap required three things: discovery via the Vertex AI Reasoning Engines API, cost tracking with real Gemini pricing, and — most importantly — getting credentials right.
 
@@ -104,7 +104,7 @@ The `SyncAgentsConsumer` picks up `SyncAgentsRequested` events from the message 
 
 ## Getting Cost Right: Model vs. Platform
 
-Once agents are discovered, OTLP telemetry from their runtime flows into the observability pipeline. Here we hit a subtle bug that had gone unnoticed with the other platforms: `ComputeCost` was computing cost using `record.Platform` as the model lookup key instead of `record.Model`. For Copilot Studio events this happened to work because the platform name sometimes matched a model alias. For Vertex AI events with actual Gemini model names like `gemini-2.5-flash`, the lookup always missed — every event fell back to the GPT-4o price.
+Once agents are discovered, OTLP telemetry from their runtime flows into the observability pipeline. Here we hit a subtle bug that had been silent across all platforms: `ComputeCost` was computing cost using `record.Platform` as the model lookup key instead of `record.Model`. The Prices dictionary is keyed on model identifiers like `gpt-4o` and `gemini-2.5-flash` — not platform names like `copilot_studio` or `vertex_ai`. Without a match, every event fell back to the same hardcoded default price, making the cost data uniformly wrong regardless of which model actually ran.
 
 The fix was a one-line change to use `record.Model`, combined with adding the Gemini pricing rows to the lookup table:
 
@@ -121,7 +121,7 @@ The `/api/costs/summary` endpoint was also updated to derive the cost summary fr
 
 ## What We Learned
 
-**Pluggable connectors make cloud expansion cheap.** Because `IPlatformConnector` is narrow — just `ListAgentsAsync`, `GetStatusAsync`, `ReadConfigAsync`, and lifecycle stubs — adding Vertex AI touched fewer than a dozen lines outside the connector itself. The scheduler, consumer, and database layer required no changes.
+**Pluggable connectors keep integration points minimal.** Because `IPlatformConnector` is narrow — just `ListAgentsAsync`, `GetStatusAsync`, `ReadConfigAsync`, and lifecycle stubs — the connector itself is the only place that touches GCP-specific logic. The factory registration, scheduler, and message consumer all treat Vertex AI identically to any other platform. That said, adding a new cloud end-to-end also required database migrations to carry the agent name through the observability pipeline, OTLP ingest changes to recognise Vertex event types, and frontend hook updates — the connector interface kept those integration points predictable, not zero.
 
 **Host ADC is a trap in multi-tenant systems.** Relying on ambient GCP credentials would have silently mixed tenant data in local dev and caused opaque failures in production when the host identity lacked access to a tenant's project. Resolving credentials from the tenant's own Infisical secret at discovery time is the only safe model.
 
