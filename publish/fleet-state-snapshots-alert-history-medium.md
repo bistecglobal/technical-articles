@@ -1,12 +1,6 @@
----
-title: "Your AI Fleet's Black Box: Point-in-Time Snapshots and Alert History for Mission Control"
-project: claude-mcd
-tags: [AI, DevOps, Observability, Autonomous Agents, Engineering]
-status: audited
-date: 2026-06-22
----
-
 # Your AI Fleet's Black Box: Point-in-Time Snapshots and Alert History for Mission Control
+
+*How we added persistent history to a live AI agent dashboard — and what we immediately caught that we'd been missing.*
 
 An agent stalled last Tuesday at 3 PM. A budget threshold fired overnight. You only noticed this morning — and by then, your live dashboard had moved on. If you've run a fleet of autonomous AI agents for any length of time, you know this feeling: the present is visible, but the past is dark.
 
@@ -96,3 +90,9 @@ If you're running autonomous agents at any scale, instrument the history early. 
 ---
 
 *Mission Control is part of the open-source [MCD multi-channel Discord platform](https://github.com/chan4lk/claude-multi-channel-discord).*
+
+*Originally published at bistecglobal.com*
+
+---
+
+**BistecGlobal** builds AI-native enterprise software. Follow us for engineering insights.
