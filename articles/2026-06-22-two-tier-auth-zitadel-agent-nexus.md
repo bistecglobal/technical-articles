@@ -2,7 +2,7 @@
 title: "Two Kinds of Users, One Platform: How We Built Credential Tiers into Agent Nexus"
 project: agent-nexus
 tags: [AI, Authentication, Multi-Tenant, Zitadel, Infisical, .NET, Enterprise]
-status: draft
+status: audited
 date: 2026-06-22
 ---
 
@@ -54,7 +54,7 @@ public static class CredentialTierResolver
 
 Two decisions worth calling out:
 
-**Ambiguity is denied, not resolved.** If a token carries both `developer` and `tenant` roles — a misconfiguration we've seen in staging — the resolver returns `None`, which gates the request with a 403. We considered defaulting to the lower-privilege tier, but decided that a confused token should never succeed quietly. Fail closed.
+**Ambiguity is denied, not resolved.** If a token carries both `developer` and `tenant` roles — a misconfiguration that is easy to make during Zitadel project role setup — the resolver returns `None`, which gates the request with a 403. We considered defaulting to the lower-privilege tier, but decided that a confused token should never succeed quietly. Fail closed.
 
 **Zitadel's role claim needs parsing.** The `urn:zitadel:iam:org:project:roles` claim is a JSON object like `{"developer": {"orgId": "..."}}` — the role names are the keys. The middleware uses `JsonDocument` to extract those keys, merging them with any flat `role` claims for backwards compatibility:
 
@@ -115,7 +115,7 @@ The credential tier system is a two-layer enforcement: Zitadel role assertion en
 
 Multi-tenant platforms often treat "who are you" and "what can you touch" as one question, answering both with permission checks on individual resources. That works for data. It's insufficient for infrastructure credentials, where the wrong write doesn't just expose a row — it puts one tenant's secrets under another tenant's identity, or gives a customer write access to shared platform configuration.
 
-The design that helped most: model the user type as a first-class value in the request context, not as a permission check at the endpoint level. Once `CredentialTier` is stamped on every request, every downstream operation — secret paths, Infisical identities, EF Core tenant filters — can branch on it without each service needing to re-derive who the caller is.
+The design that helped most: model the user type as a first-class value in the request context, not as a permission check at the endpoint level. Once `CredentialTier` is stamped on every request, every downstream operation — secret paths, Infisical identities, and EF Core tenant queries scoped by `TenantId` — flows from the same `TenantContext` without each service needing to re-derive who the caller is.
 
 ---
 
