@@ -13,6 +13,7 @@ OKR and performance management platform used by Bistec.
 **Article ideas:**
 - *Building an AI-Autonomous Backlog Loop* — how we set up Claude to continuously implement, merge, and regenerate backlog items without human intervention
 - *MCP-First Feature Development* — shipping features with Claude MCP tools as the primary API surface for AI agents
+- *AI Meeting Prep via MCP: Exposing Stale Check-ins and Key Results to Managers* — how Keyflow's `report(action='team_prep')` MCP tool returns direct reports with `daysSinceCheckIn`, `isStale` flag (>14 days), and key results, giving AI assistants the context to prepare managers for 1:1s without manual data gathering [commit `89fd75c`]
 - *From BACKLOG.md to Production: Autonomous Software Delivery* — the scheduling, heartbeat, and inject pattern powering zero-touch delivery ✅ Published ([bistecglobal/blog#20](https://github.com/bistecglobal/blog/issues/20))
 - *Domain-First MCP Design: Building OKR Tools That AI Agents Actually Use* — how we systematically exposed recognition, feedback, analytics, and template tools via MCP, including a service-layer extraction to eliminate API/MCP duplication [commits: `051cdfc`, `f7161bc`, `5149b32`] ✅ Published ([bistecglobal/blog#6](https://github.com/bistecglobal/blog/issues/6))
 
@@ -57,6 +58,10 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Fleet State Snapshots and Alert History: Point-in-Time Observability for AI Agent Fleets* — how MCD stores labeled fleet snapshots in SQLite and renders an A/B diff view (added/removed/changed projects with state and token deltas), alongside a unified alert event log with type/slug filtering and 30-day auto-purge [commit `5cd1c48`] ✅ Published ([bistecglobal/blog#23](https://github.com/bistecglobal/blog/issues/23))
 - *Agent Behavior Scorecard: Measuring Tool-Call Efficiency Across an AI Fleet* — how MCD extends its metrics API with per-agent toolStats (top tools by call count, avg calls/turn, avg output tokens/turn, efficiency score 0-100) and renders a collapsible ScoreCard with horizontal bar chart in the fleet dashboard [commit `d9b4814`] ✅ Published ([bistecglobal/blog#24](https://github.com/bistecglobal/blog/issues/24))
 - *When Your AI Agents Start Behaving Strangely: Statistical Anomaly Detection for Claude Fleets* — how MCD's `/anomalies` page applies z-score anomaly detection to Claude Code JSONL transcripts, computing 7-day baselines (mean + sample stddev) for inter-turn gap, tool calls/turn, and output tokens/turn, then flagging projects whose last-3-turn mean deviates ≥2σ (warn) or ≥3σ (critical) [commit `808d275`] ✅ Published ([bistecglobal/blog#25](https://github.com/bistecglobal/blog/issues/25))
+- *The Agent Collaboration Network: Visualising How AI Projects Share Context* — how MCD's `/collaboration` page builds a D3 force-directed graph where nodes are projects and edges encode topic overlap across shared memory, goals, and proposals — edge colour = connection type (memory=purple, goal=cyan, proposal=amber), threshold slider filters noise, click-to-inspect reveals shared keywords [commit `1beb2d6`]
+- *Annotating AI Agent Sessions: A Turn-Level Debugging Layer for Claude Fleets* — how MCD adds a `turn_annotations` SQLite table and a per-turn popover on the Replay page (note/warning/bug tags, text), with a fleet-wide `/annotations` browser filterable by slug and tag and a `?turn=<index>` deep-link back into Replay — treating agent sessions as debuggable artifacts rather than read-only logs [commit `4537b7a`]
+- *Wiring AI Fleet Events to External Systems: Outbound Webhooks in MCD* — how MCD's `fireWebhooks()` dispatches stall-alert, budget-alert, and circuit-open SSE events to operator-registered URLs (5s timeout, Slack format toggle), with a `/admin/webhooks` CRUD page, per-webhook delivery log (last 20 deliveries + status codes), and a "Test" button for dry-run validation [commit `865a3e9`]
+- *Governing CLAUDE.md at Scale: A Template Library for AI Agent Prompts* — how MCD's `/claude-templates` page manages a shared library of CLAUDE.md prompt templates (create/edit/delete, category filter, 3 built-in read-only templates), and how the ProjectGraph CLAUDE.md editor gains "Load template" and "Save as template" actions — treating system prompts as governed, reusable config rather than per-project one-offs [commit `4537b7a`]
 
 ---
 
@@ -159,4 +164,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-22 (ideate scan) | Maintained by bistec-articles agent*
+*Updated: 2026-06-22 (ideate scan × 2) | Maintained by bistec-articles agent*
