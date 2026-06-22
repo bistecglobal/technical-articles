@@ -1,12 +1,6 @@
----
-title: "Adding a Second Connector to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction"
-project: agent-nexus
-tags: [AI, Google Cloud, Vertex AI, Multi-Cloud, Observability, .NET, Enterprise]
-status: audited
-date: 2026-06-22
----
-
 # Adding a Second Connector to Our AI Agent Platform: What Vertex AI Taught Us About Our Own Abstraction
+
+*Three hidden assumptions in our multi-cloud connector design — and how Vertex AI exposed all of them.*
 
 We assumed adding Vertex AI would be straightforward. Agent Nexus already governed agents on Microsoft Copilot Studio behind a common `IPlatformConnector` interface. Adding Google's platform was, in theory, just another implementation. In practice, three cracks appeared in our design that the first connector never surfaced. Here's what we found — and what the second integration taught us about building multi-cloud agent governance.
 
@@ -108,3 +102,9 @@ A second integration stress-tests your architecture in ways the first never coul
 ---
 
 *Agent Nexus is BistecGlobal's multi-tenant control plane for AI agent governance across Copilot Studio and Vertex AI.*
+
+*Originally published at bistecglobal.com*
+
+---
+
+**BistecGlobal** builds AI-native enterprise software. Follow us for engineering insights.
