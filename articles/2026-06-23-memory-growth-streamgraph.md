@@ -2,7 +2,7 @@
 title: "Watching an AI Fleet Remember: A Silhouette Streamgraph of Memory Growth"
 project: claude-mcd
 tags: [AI, Observability, Data Visualization, Developer Tooling, Agents]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
