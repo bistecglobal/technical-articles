@@ -2,13 +2,13 @@
 title: "One Number Per Agent: Building a Composite Health Scorecard for an AI Fleet"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Claude, Engineering]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
 # One Number Per Agent: Building a Composite Health Scorecard for an AI Fleet
 
-We run fifteen AI agents continuously — each in its own Claude Code session, each working on a different project. On any given morning, a few of them are thriving: turning work out efficiently, memory files tidy, goals hit. Others have quietly degraded. Maybe a project's memory files haven't been updated in three weeks. Maybe an agent is burning 80% of its context window without producing useful output. Maybe it started flagging anomalies in the middle of the night.
+We run close to twenty AI agents continuously — each in its own Claude Code session, each working on a different project. On any given morning, a few of them are thriving: turning work out efficiently, memory files tidy, goals hit. Others have quietly degraded. Maybe a project's memory files haven't been updated in three weeks. Maybe an agent is burning 80% of its context window without producing useful output. Maybe it started flagging anomalies in the middle of the night.
 
 For a long time, checking on fleet health meant opening five separate dashboards. Then a new intern joined and asked the obvious question: "Is there one page that tells me which agents to worry about?" There wasn't. Now there is.
 
@@ -82,7 +82,7 @@ The table auto-refreshes every five minutes. For a fleet that runs continuously,
 
 ## What We Learned Building It
 
-**The hardest decision was the weights.** We iterated on them three times before shipping. Early versions weighted anomalies higher (20%) and found that agents going through periods of legitimate high activity would score poorly even when healthy. Moving anomalies to 10% and giving that weight to turn quality produced a score that felt aligned with subjective operator judgment.
+**The hardest decision was the weights.** Anomalies sit at 10% rather than higher for a specific reason: an agent going through a legitimate burst of high activity — many tool calls, dense output — would trigger anomaly flags even when performing well. Treating anomalies as an early-warning signal rather than a primary health indicator, and weighting turn quality and memory at 30% each, produced a score that stayed aligned with what operators could see in the agent's actual output.
 
 **"Worst first" is a policy, not a preference.** The default ascending sort feels wrong if you think of scores as grades. But for operational health monitoring, you are always triaging. Making the worst agents visible immediately changed how the team uses the dashboard — it became a morning check rather than an exploration.
 
