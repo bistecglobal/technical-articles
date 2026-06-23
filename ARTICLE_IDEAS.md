@@ -41,6 +41,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 
 **Article ideas:**
 - *Multi-Signal Fleet Topology: Connecting AI Agents by Memory and Goals* — how MCD's topology extended beyond transcript cross-references to Jaccard similarity of MEMORY.md/GOAL.md keywords and shared git remotes, plus Fleet Digest for per-project health aggregation [commits: `ddd8004`, `76755c8`] ✅ Published ([bistecglobal/blog#29](https://github.com/bistecglobal/blog/issues/29))
+- *Scheduled Context Injection and Memory Drift Monitoring for AI Agent Fleets* — how MCD's `inject`-type schedules push time-aware context into agent sessions (vs task `prompt` schedules), and how the `/memory-diff` page tracks MEMORY.md churn with a drift score and git diff timeline [commits: `8246bb4`, `1389d61`] ✅ Published ([bistecglobal/blog#30](https://github.com/bistecglobal/blog/issues/30))
 - *One Bot, Many Agents: Architecting a Multi-Channel AI Fleet* — how MCD isolates one Claude subprocess per Discord channel
 - *Building a Mission Control for AI Agents* — neon graph UI, stall detection, autonomous heartbeat inject
 - *Heartbeat Watchdog Pattern for Autonomous AI Agents* — detecting and recovering stalled agents at scale ✅ Published ([bistecglobal/blog#2](https://github.com/bistecglobal/blog/issues/2))
