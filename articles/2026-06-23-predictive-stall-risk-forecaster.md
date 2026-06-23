@@ -2,7 +2,7 @@
 title: "Don't Wait for the Watchdog: Forecasting AI Agent Stalls Before They Fire"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Agents, Reliability]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
