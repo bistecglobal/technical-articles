@@ -123,7 +123,7 @@ Gas industry workflow platform.
 
 ## keyflow — CI/CD
 
-- *Cutting E2E CI from 20 Minutes to 5: Three-Layer Caching and a Self-Hosted Runner Migration* — how keyflow layered GitHub Actions caching on `node_modules` (keyed on `package-lock.json`), Next.js webpack build artifacts (`.next/cache`), and the Playwright Chromium browser so warm runs skip `npm ci` entirely, alongside migrating all workflows off GitHub-hosted runners to a self-hosted runner and swapping buildx for podman build/push [commits `21d07d0`, `8c78d0a`, `00cd3ca`]
+- *Cutting E2E CI from 20 Minutes to 5: Three-Layer Caching and a Self-Hosted Runner Migration* — how keyflow layered GitHub Actions caching on `node_modules` (keyed on `package-lock.json`), Next.js webpack build artifacts (`.next/cache`), and the Playwright Chromium browser so warm runs skip `npm ci` entirely, alongside migrating all workflows off GitHub-hosted runners to a self-hosted runner and swapping buildx for podman build/push [commits `21d07d0`, `8c78d0a`, `00cd3ca`] ✅ Published ([bistecglobal/blog#36](https://github.com/bistecglobal/blog/issues/36))
 
 ---
 
