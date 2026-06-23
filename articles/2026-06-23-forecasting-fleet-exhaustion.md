@@ -2,7 +2,7 @@
 title: "When Does the Fleet Run Out? Forecasting Token Burn and Backlog Velocity in Mission Control"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Forecasting, Developer Tooling]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
