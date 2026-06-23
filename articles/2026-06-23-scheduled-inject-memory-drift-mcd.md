@@ -2,7 +2,7 @@
 title: "Keeping Autonomous AI Agents on Track: Scheduled Context Injection and Memory Drift Monitoring"
 project: claude-mcd
 tags: [AI, DevOps, Autonomous Agents, Observability, Engineering]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
@@ -52,9 +52,9 @@ Registering one looks like:
 !project schedule inject --slug keyflow 09:00 "Good morning, {{slug}}. Today is {{date}}."
 ```
 
-The key design decision was routing inject schedules through the same `deliver()` code path as real Discord messages. The agent doesn't know the message is scheduled — it arrives as an ordinary inbound envelope. This means inject templates work regardless of the underlying agent runner (Claude Code, a future MiniMax-backed agent, or any other process that speaks the same envelope format).
+The key design decision was routing inject schedules through the same `deliver()` code path as real Discord messages. The agent doesn't know the message is scheduled — it arrives as an ordinary inbound envelope. This means inject templates work regardless of the underlying agent runner — Claude Code, openclaw, or any other CLI that speaks the same envelope format.
 
-The Mission Control dashboard gained a **Scheduled** tab on the Inject Templates page, listing all active inject schedules alongside their last fire time and resolved template preview.
+The Mission Control dashboard gained a **Scheduled** tab on the Inject Templates page, listing active inject schedules grouped by project — each showing the raw template body, schedule time, run count, and last fire time.
 
 ## Memory Diff Timeline: Observe How Agents Change
 
@@ -78,7 +78,7 @@ The `/memory-diff` page renders a per-project accordion. Each project shows its 
 
 ## What Surprised Us
 
-**The drift scores were immediately revealing.** On our first run across 14 active projects, three showed drift scores above 60%. Two were expected — those agents had been running for several weeks under heavy autonomous operation. The third was a surprise: a project where the memory had been edited manually during debugging, pushing churn artificially high. The timeline made the cause obvious in seconds.
+**The drift scores were immediately revealing.** On our first run across the active fleet, several projects surfaced with drift scores above 60%. Most were expected — agents that had been running for weeks under heavy autonomous operation. One was a surprise: a project whose memory had been edited manually during debugging, pushing churn artificially high. The timeline made the cause obvious in seconds.
 
 **Inject templates changed agent behavior noticeably.** Before the feature, agents on long-running projects would sometimes open sessions referencing sprint goals that were two weeks stale. After deploying a daily 09:00 inject with `{{date}}` and a reminder to check `BACKLOG.md`, those references disappeared. The agents were simply better oriented.
 
