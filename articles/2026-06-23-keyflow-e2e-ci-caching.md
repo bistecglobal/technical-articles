@@ -2,7 +2,7 @@
 title: "Three Caches, One Runner: How We Cut the Repeated Work Out of a Next.js E2E Pipeline"
 project: keyflow
 tags: [DevOps, CI/CD, GitHub Actions, Playwright, Next.js]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
