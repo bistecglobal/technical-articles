@@ -2,7 +2,7 @@
 title: "No Slug Required: Per-Channel Native Slash Commands for a Multi-Project AI Fleet"
 project: claude-mcd
 tags: [AI, DevOps, Discord, Developer Tooling, Bots]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
