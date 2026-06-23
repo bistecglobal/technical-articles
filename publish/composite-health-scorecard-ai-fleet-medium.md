@@ -1,12 +1,6 @@
----
-title: "One Number Per Agent: Building a Composite Health Scorecard for an AI Fleet"
-project: claude-mcd
-tags: [AI, DevOps, Observability, Claude, Engineering]
-status: audited
-date: 2026-06-23
----
-
 # One Number Per Agent: Building a Composite Health Scorecard for an AI Fleet
+
+*How we replaced five separate dashboards with a single weighted score that tells operators which AI agents need attention — right now.*
 
 We run close to twenty AI agents continuously — each in its own Claude Code session, each working on a different project. On any given morning, a few of them are thriving: turning work out efficiently, memory files tidy, goals hit. Others have quietly degraded. Maybe a project's memory files haven't been updated in three weeks. Maybe an agent is burning 80% of its context window without producing useful output. Maybe it started flagging anomalies in the middle of the night.
 
@@ -97,3 +91,11 @@ The composite scorecard is now the first page the team opens in Mission Control.
 At its core, the scorecard is an argument that fleet health is a real concept worth defining explicitly. Picking five dimensions and assigning them weights is an imperfect judgment call. But a visible, arguable score is more useful than a silent collection of charts that nobody checks.
 
 When you run agents at scale, the question isn't whether they're working — it's whether they're healthy enough to keep working. The scorecard makes that question answerable in under a second.
+
+---
+
+*Originally published at bistecglobal.com*
+
+---
+
+**BistecGlobal** builds AI-native enterprise software. Follow us for engineering insights.
