@@ -2,7 +2,7 @@
 title: "The Silent Agent: Catching Usage Limits and Auto-Switching Models Mid-Run"
 project: claude-mcd
 tags: [AI, DevOps, LLM, Reliability, Agents]
-status: draft
+status: audited
 date: 2026-06-23
 ---
 
