@@ -2,7 +2,7 @@
 title: "Does a Bigger Memory Make a Smarter Agent? A Diagnostic Quadrant for an AI Fleet"
 project: claude-mcd
 tags: [AI, Observability, Data Visualization, Agents, Developer Tooling]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
