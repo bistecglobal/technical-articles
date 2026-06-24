@@ -2,7 +2,7 @@
 title: "Two Numbers, One Verdict: Triaging AI Agents on a Convergence × Context-Risk Scatter"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
