@@ -2,7 +2,7 @@
 title: "One Attention Engine, Two Faces: Killing 500 Lines of Duplicated Fleet Logic"
 project: claude-mcd
 tags: [AI, Observability, Software Design, Refactoring, TypeScript]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
