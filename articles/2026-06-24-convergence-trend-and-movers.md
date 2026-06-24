@@ -2,7 +2,7 @@
 title: "The Trend Line and the Suspects: Two Views That Make AI Fleet Progress Accountable"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
