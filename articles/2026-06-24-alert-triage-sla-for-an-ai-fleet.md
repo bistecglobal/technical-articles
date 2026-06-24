@@ -2,7 +2,7 @@
 title: "Your AI Fleet's Alerts Are Lying to You — Until You Give Them a Lifecycle"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Incident Response, SQLite]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
