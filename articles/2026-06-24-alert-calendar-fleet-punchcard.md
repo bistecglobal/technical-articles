@@ -2,7 +2,7 @@
 title: "When Do Your AI Agents Cry for Help? A Day-and-Hour Heatmap of Fleet Alerts"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
