@@ -2,7 +2,7 @@
 title: "Is Your Agent Thinking or Just Thrashing? Correlating Memory Churn Against Progress"
 project: claude-mcd
 tags: [AI, Observability, Statistics, Autonomous Agents, Data Visualization]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
@@ -16,7 +16,7 @@ So we put the two series on the same chart and asked the only question that disa
 
 The raw material already existed in two separate places. `memory_diff_log` records every memory change with added and removed line counts. `convergence_history` records each agent's goal-convergence score over time. Neither knew about the other.
 
-The join is a single database function that summes churn from one table and brackets convergence from the other, per project, over a 30-day window:
+The join is a single database function that sums churn from one table and brackets convergence from the other, per project, over a 30-day window:
 
 ```sql
 SELECT slug, SUM(added + removed) AS churn, COUNT(*) AS diffCount
