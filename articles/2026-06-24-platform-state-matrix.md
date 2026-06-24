@@ -2,7 +2,7 @@
 title: "The Oldest Chart in Statistics, Rebuilt for an AI Agent Fleet"
 project: claude-mcd
 tags: [AI, Observability, DevOps, DataViz, Agents]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
