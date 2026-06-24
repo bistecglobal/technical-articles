@@ -2,7 +2,7 @@
 title: "Scrubbing Through Time: A VCR for Your AI Agent Fleet's History"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
