@@ -74,6 +74,18 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Is the Whole Fleet Getting Smarter? A 14-Day Convergence Trend Line* — how MCD's `/convergence-trend` + `/api/convergence-trend` aggregate `convergence_history` per calendar day (AVG score, count of converged agents ≥90) over 14 days to show whether fleet-wide goal convergence is trending up or down [commit `a5e32e4` P183 PR #191] ✅ Published ([bistecglobal/blog#44](https://github.com/bistecglobal/blog/issues/44) — paired with P185)
 - *An EKG for an AI Agent Fleet* — how MCD's `/ekg` page renders a 48-hour, 5-lane activity waveform (alerts, injects, memory writes, digests, broadcasts) pulled as bare timestamp arrays from five tables via `getEkgTimestamps` (splitting alerts/injects by `alert_type`, normalizing broadcasts' ISO `ts` to epoch with `strftime('%s')`), hourly-bucketed with `now` snapped to the hour, each lane scaled to its own busiest hour so rare events stay visible, busiest-hour headline, `/api/ekg` 60s refresh [commit `8918ad7` P199 PR #204] ✅ Published ([bistecglobal/blog#45](https://github.com/bistecglobal/blog/issues/45))
 - *Histogram of Minds: Visualizing Convergence Distribution Across an AI Fleet* — how MCD's `/convergence-dist` bins agent convergence scores into deciles (`Math.floor(score/10)`) and renders a red→green gradient histogram off `/api/fleet`, exposing whether the fleet is bimodal (some converged, some stuck) at a glance [commit `5293573` P182 PR #189] ✅ Published ([bistecglobal/blog#43](https://github.com/bistecglobal/blog/issues/43))
+- *Your AI Fleet's Alerts Are Lying to You — Until You Give Them a Lifecycle* — how MCD adds an ack/re-open lifecycle to `alert_events` via two nullable columns (`ack_ts`/`ack_by`, additive migration), guarded single-row UPDATEs (`WHERE ack_ts IS NULL`) as the concurrency lock, a session-gated POST/DELETE `/api/alerts/[id]/ack` that writes `alert.ack`/`alert.unack` audit entries, and a backward-compatible `includeAcked` read flag; then layers `/api/alert-sla` (P198) computing median/p90 time-to-ack, ack rate, and open-backlog stats from raw `(type, ts, ack_ts)` rows with interpolated percentiles, sorted worst-first [commits `9a88fd4` P196, `e6fa35e` P198] ✅ Published ([bistecglobal/blog#46](https://github.com/bistecglobal/blog/issues/46))
+
+### New candidates — ideate scan 2026-06-24 (MCD P200–P211)
+- *One Attention Engine, Two Faces: Unifying a Fleet Advisor and a Natural-Language Brief* — how MCD extracted a shared `attention-findings.ts` (452 lines + unit tests) that both the `/api/advisor` and `/api/brief` routes consume, collapsing ~500 lines of duplicated heuristics into one tested module [commits `0182518` P205, `b211279` P208]
+- *Forecasting Fleet Convergence: Projecting Whether Your Agents Will Actually Finish* — MCD's P202 Fleet Convergence Forecast extrapolates `convergence_history` trend to project fleet-wide goal attainment [commit `f276ed6` P202]
+- *Does Bigger Memory Correlate With Convergence? Measuring It Per-Fleet* — MCD's P201 Memory × Convergence Correlation quantifies the relationship between agent memory size and convergence score [commit `6865f7f` P201]
+- *Signal Co-Occurrence: A Force Graph of Which Fleet Alerts Fire Together* — MCD's P211 builds a force-directed graph linking alert/attention signals that co-occur, surfacing correlated failure modes [commit `5fb93ca` P211]
+- *Webhook Delivery Health and Feed Freshness: Watching the Watchers* — MCD's P195/P197 track outbound webhook delivery success and per-feed staleness so the observability pipeline itself is observable [commit `ad41787` P195+P197]
+
+### New candidates — ideate scan 2026-06-24 (keyflow)
+- *A Cycle Health Context Row: Showing Elapsed % vs Average Score Inline* — keyflow's my-okrs page adds a context row comparing how far through the cycle you are against the average KR score, flagging at-risk cycles at a glance [commit `9862fc1` #353]
+- *Global API Error Toast With Retry: One Resilience Pattern for a Whole Next.js App* — keyflow's app-wide error toast intercepts failed API calls and offers a one-click retry, replacing scattered per-component error handling [commit `18371c3` #354]
 
 ---
 
@@ -182,4 +194,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-24 (ideate scan — added MCD P182/P183/P185/P186/P187/P190) | Maintained by bistec-articles agent*
+*Updated: 2026-06-24 (published alert-triage-sla #46; ideate scan — added 7 new candidates: MCD P201/P202/P205/P208/P211/P195+P197, keyflow #353/#354) | Maintained by bistec-articles agent*
