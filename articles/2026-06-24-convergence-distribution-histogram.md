@@ -2,7 +2,7 @@
 title: "The Average Hid a Split Fleet: A Convergence Histogram for AI Agents"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
