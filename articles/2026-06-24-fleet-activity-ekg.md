@@ -2,7 +2,7 @@
 title: "An EKG for an AI Agent Fleet: Five Event Streams on One Waveform"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, DataViz]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
