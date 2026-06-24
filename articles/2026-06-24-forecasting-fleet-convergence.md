@@ -2,7 +2,7 @@
 title: "When Will This Agent Actually Finish? Fitting a Trend Line to Goal Convergence"
 project: claude-mcd
 tags: [AI, Observability, Forecasting, Statistics, Autonomous Agents]
-status: draft
+status: audited
 date: 2026-06-24
 ---
 
