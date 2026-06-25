@@ -2,7 +2,7 @@
 title: "Did the Schedule Actually Fire? Run History for Autonomous Agents"
 project: claude-mcd
 tags: [AI Agents, Observability, Automation, Reliability, DevOps]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
