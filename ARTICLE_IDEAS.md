@@ -93,6 +93,16 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *When Does a Memory Go Stale? A Radar for Aging Agent Knowledge* — MCD's P230 memory staleness radar flags agents whose MEMORY.md entries have not been touched relative to their activity, surfacing prune/refresh candidates [commit `145cb83` P230]
 - *Operational Swimlanes: A Timeline View of What Every Agent Is Doing* — MCD's P221 fleet operational timeline renders per-project swimlanes of activity state over time, a Gantt-style operational picture of the whole fleet [commit `a152993` P221]
 
+### New candidates — ideate scan 2026-06-25 (MCD P236–P261)
+- *The Sankey That Shows How Agents Move: Visualizing Fleet State Transitions* — MCD's P237 renders a state-transition Sankey (idle→active→stalled→autonomous) so operators see how their fleet flows between lifecycle states, paired with P236's per-tool error-rate monitor [commit `181baff` P236+P237]
+- *A Knowledge Graph of What Your Agents Know: Cross-Project Memory as a Network* — MCD's P252 builds a cross-project memory knowledge graph linking projects by shared memory concepts, turning isolated MEMORY.md files into one navigable network [commit `9fa3189` P252]
+- *Digital Twins for AI Agents: Finding the Project Most Like This One* — MCD's P258 Project Twin Analysis surfaces, for any agent, its nearest-neighbour project across activity/memory/convergence dimensions — a similarity lookup for triage and pattern transfer [commit `0600993` P258]
+- *How Long Until It Answers? A Response-Latency Distribution for an AI Fleet* — MCD's P256 computes per-project response-latency histograms from transcript timestamps, exposing slow-responding agents the averages hide [commit `bc66776` P256]
+- *Mind the Gap: Detecting and Explaining Silent Pauses in Agent Sessions* — MCD's P251 Session Gap Analysis finds long inter-turn gaps within a session and surfaces them so operators can tell a stalled agent from a merely idle one [commit `55980cd` P251]
+- *From Cradle to Autonomy: A Lifecycle Funnel for Your AI Agent Fleet* — MCD's P254 Project Lifecycle Funnel charts how many projects reach each stage (registered → active → autonomous), a conversion funnel for agent maturity [commit `8c8da4e` P254]
+- *The Operator Inbox: A Unified Action Queue for Steering an Agent Fleet* — MCD's P248 Operator Inbox aggregates everything needing a human decision across all projects into one prioritized queue, alongside P249's per-session memory timeline [commit `7d7ccec` P248+P249]
+- *Wall of Agents: A Fleet Mosaic and a Lifecycle Clock for At-a-Glance Triage* — MCD's P260 Fleet Mosaic renders every project as a status-colored tile and P261 Lifecycle Clock maps fleet activity onto a 24-hour radial dial [commit `91572a4` P260+P261]
+
 ### New candidates — ideate scan 2026-06-25 (agent-nexus)
 - *Header-Driven Multi-Tenancy: Gateway X-Tenant-Id Injection for Cross-Cloud Agent Observability* — agent-nexus's gateway now injects a tenant header on every governance call so OTLP ingest honors the first-hop tenant id end-to-end, with config parameterization and e2e tests [commit `d40a15e`] ✅ Published as *One Tenant, Two IDs* ([bistecglobal/blog#55](https://github.com/bistecglobal/blog/issues/55))
 
@@ -210,4 +220,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-25 (published webhook-health-feed-freshness #52; ideate scan — added 10 new candidates: MCD P212/P217/P219/P221/P227+P233/P229/P230/P234, agent-nexus gateway tenant injection, keyflow #356) | Maintained by bistec-articles agent*
+*Updated: 2026-06-25 (published drawing-the-family-tree #58 [P229]; ideate scan — added 8 new MCD candidates P236+P237/P252/P258/P256/P251/P254/P248+P249/P260+P261) | Maintained by bistec-articles agent*
