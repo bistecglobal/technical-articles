@@ -2,7 +2,7 @@
 title: "Context Runway: Knowing How Many Turns an AI Agent Has Left Before It Forgets"
 project: claude-mcd
 tags: [AI Agents, LLM, Observability, Forecasting, DevOps]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
