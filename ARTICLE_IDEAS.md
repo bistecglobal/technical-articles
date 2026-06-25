@@ -83,6 +83,22 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Signal Co-Occurrence: A Force Graph of Which Fleet Alerts Fire Together* — MCD's P211 builds a force-directed graph linking alert/attention signals that co-occur, surfacing correlated failure modes [commit `5fb93ca` P211] ✅ Published ([bistecglobal/blog#51](https://github.com/bistecglobal/blog/issues/51))
 - *Webhook Delivery Health and Feed Freshness: Watching the Watchers* — MCD's P195/P197 track outbound webhook delivery success and per-feed staleness so the observability pipeline itself is observable [commit `ad41787` P195+P197] ✅ Published ([bistecglobal/blog#52](https://github.com/bistecglobal/blog/issues/52))
 
+### New candidates — ideate scan 2026-06-25 (MCD P212–P235)
+- *Where Does Your Fleet's Attention Go? A Sankey of Agent Focus* — MCD's P212 renders a fleet attention Sankey diagram tracing how operator/agent attention flows across projects and signal types [commit `bf1efbc` P212]
+- *Closing the Loop: A Schedule Run History and Outcome Tracker for Autonomous Agents* — MCD's P217 records every scheduled agent run with its outcome, turning fire-and-forget cron-style schedules into an auditable history with success/failure tracking [commit `0670b47` P217]
+- *Drawing the Family Tree: Visualizing the Agent Spawn Hierarchy* — MCD's P229 builds an agent spawn tree showing which sessions spawned which subagents, making multi-agent delegation chains legible [commit `102e8db` P229 #226]
+- *How Much Runway Is Left? Per-Agent Context Exhaustion Forecasting* — MCD's P219 context runway projects how many turns each agent has before it hits its context limit, surfacing imminent resets before they happen [commit `099ca54` P219]
+- *MTTR for AI Subprocesses: Measuring Circuit-Breaker Recovery Across a Fleet* — MCD's P227 circuit breaker timeline + P233 MTTR table quantify how fast crashing Claude subprocesses recover, applying classic SRE reliability metrics to AI agents [commits `aba4f72` P227, `bbba5b3` P233]
+- *Forecasting Autonomous Throughput: A Backlog Completion Projection* — MCD's P234 backlog forecast extrapolates recent completion velocity to project when an autonomous agent will clear its BACKLOG.md [commit `bbba5b3` P234]
+- *When Does a Memory Go Stale? A Radar for Aging Agent Knowledge* — MCD's P230 memory staleness radar flags agents whose MEMORY.md entries have not been touched relative to their activity, surfacing prune/refresh candidates [commit `145cb83` P230]
+- *Operational Swimlanes: A Timeline View of What Every Agent Is Doing* — MCD's P221 fleet operational timeline renders per-project swimlanes of activity state over time, a Gantt-style operational picture of the whole fleet [commit `a152993` P221]
+
+### New candidates — ideate scan 2026-06-25 (agent-nexus)
+- *Header-Driven Multi-Tenancy: Gateway X-Tenant-Id Injection for Cross-Cloud Agent Observability* — agent-nexus's gateway now injects a tenant header on every governance call so OTLP ingest honors the first-hop tenant id end-to-end, with config parameterization and e2e tests [commit `d40a15e`]
+
+### New candidates — ideate scan 2026-06-25 (keyflow)
+- *Inline Affordances: KR Description Hover Tooltips Without a Round-Trip* — keyflow's my-okrs page surfaces full KR descriptions on hover, reducing navigation friction in a dense OKR grid [commit `5955706` #356]
+
 ### New candidates — ideate scan 2026-06-24 (keyflow)
 - *A Cycle Health Context Row: Showing Elapsed % vs Average Score Inline* — keyflow's my-okrs page adds a context row comparing how far through the cycle you are against the average KR score, flagging at-risk cycles at a glance [commit `9862fc1` #353]
 - *Global API Error Toast With Retry: One Resilience Pattern for a Whole Next.js App* — keyflow's app-wide error toast intercepts failed API calls and offers a one-click retry, replacing scattered per-component error handling [commit `18371c3` #354] ✅ Published ([bistecglobal/blog#50](https://github.com/bistecglobal/blog/issues/50))
@@ -194,4 +210,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-24 (published alert-triage-sla #46; ideate scan — added 7 new candidates: MCD P201/P202/P205/P208/P211/P195+P197, keyflow #353/#354) | Maintained by bistec-articles agent*
+*Updated: 2026-06-25 (published webhook-health-feed-freshness #52; ideate scan — added 10 new candidates: MCD P212/P217/P219/P221/P227+P233/P229/P230/P234, agent-nexus gateway tenant injection, keyflow #356) | Maintained by bistec-articles agent*
