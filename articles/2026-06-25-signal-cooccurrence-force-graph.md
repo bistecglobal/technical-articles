@@ -2,7 +2,7 @@
 title: "Which Alerts Travel Together? A Co-occurrence Graph for an AI Agent Fleet"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Data Visualization, Multi-Agent Systems]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
