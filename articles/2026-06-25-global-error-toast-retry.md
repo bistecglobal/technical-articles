@@ -2,7 +2,7 @@
 title: "Every Mutation Gets Retry for Free: A One-Provider Error Pattern for Next.js"
 project: keyflow
 tags: [React, Next.js, Frontend, UX, Error Handling]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
