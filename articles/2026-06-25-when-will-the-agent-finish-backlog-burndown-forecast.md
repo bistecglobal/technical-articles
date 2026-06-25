@@ -2,7 +2,7 @@
 title: "When Will the Agent Finish? A Burndown Forecast for an Autonomous Backlog"
 project: claude-mcd
 tags: [AI Agents, Forecasting, Autonomous Systems, Observability, DevOps]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
