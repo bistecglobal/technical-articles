@@ -2,7 +2,7 @@
 title: "Drawing the Family Tree: Visualizing the Agent Spawn Hierarchy"
 project: claude-mcd
 tags: [AI, Agents, Observability, DeveloperTooling, Claude]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
