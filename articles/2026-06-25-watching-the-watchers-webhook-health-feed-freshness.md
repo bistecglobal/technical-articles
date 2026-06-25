@@ -2,7 +2,7 @@
 title: "Watching the Watchers: Webhook Delivery Health and Feed Freshness for an AI Fleet"
 project: claude-mcd
 tags: [Observability, AI Agents, Reliability, DevOps, Monitoring]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
