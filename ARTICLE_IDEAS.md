@@ -94,7 +94,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Operational Swimlanes: A Timeline View of What Every Agent Is Doing* — MCD's P221 fleet operational timeline renders per-project swimlanes of activity state over time, a Gantt-style operational picture of the whole fleet [commit `a152993` P221]
 
 ### New candidates — ideate scan 2026-06-25 (agent-nexus)
-- *Header-Driven Multi-Tenancy: Gateway X-Tenant-Id Injection for Cross-Cloud Agent Observability* — agent-nexus's gateway now injects a tenant header on every governance call so OTLP ingest honors the first-hop tenant id end-to-end, with config parameterization and e2e tests [commit `d40a15e`]
+- *Header-Driven Multi-Tenancy: Gateway X-Tenant-Id Injection for Cross-Cloud Agent Observability* — agent-nexus's gateway now injects a tenant header on every governance call so OTLP ingest honors the first-hop tenant id end-to-end, with config parameterization and e2e tests [commit `d40a15e`] ✅ Published as *One Tenant, Two IDs* ([bistecglobal/blog#55](https://github.com/bistecglobal/blog/issues/55))
 
 ### New candidates — ideate scan 2026-06-25 (keyflow)
 - *Inline Affordances: KR Description Hover Tooltips Without a Round-Trip* — keyflow's my-okrs page surfaces full KR descriptions on hover, reducing navigation friction in a dense OKR grid [commit `5955706` #356]
