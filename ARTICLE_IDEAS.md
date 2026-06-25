@@ -85,7 +85,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 
 ### New candidates — ideate scan 2026-06-24 (keyflow)
 - *A Cycle Health Context Row: Showing Elapsed % vs Average Score Inline* — keyflow's my-okrs page adds a context row comparing how far through the cycle you are against the average KR score, flagging at-risk cycles at a glance [commit `9862fc1` #353]
-- *Global API Error Toast With Retry: One Resilience Pattern for a Whole Next.js App* — keyflow's app-wide error toast intercepts failed API calls and offers a one-click retry, replacing scattered per-component error handling [commit `18371c3` #354]
+- *Global API Error Toast With Retry: One Resilience Pattern for a Whole Next.js App* — keyflow's app-wide error toast intercepts failed API calls and offers a one-click retry, replacing scattered per-component error handling [commit `18371c3` #354] ✅ Published ([bistecglobal/blog#50](https://github.com/bistecglobal/blog/issues/50))
 
 ---
 
