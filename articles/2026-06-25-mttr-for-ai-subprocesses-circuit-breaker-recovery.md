@@ -2,7 +2,7 @@
 title: "MTTR for AI Subprocesses: Putting a Stopwatch on Every Circuit Breaker Trip"
 project: claude-mcd
 tags: [Reliability, SRE, AI Agents, Observability, DevOps]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
