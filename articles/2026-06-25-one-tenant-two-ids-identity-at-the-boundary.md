@@ -2,7 +2,7 @@
 title: "One Tenant, Two IDs: The Identity Bug Hiding in Your Multi-Tenant Guard"
 project: agent-nexus
 tags: [Security, Multi-Tenancy, Identity, DotNet, Architecture]
-status: draft
+status: audited
 date: 2026-06-25
 ---
 
