@@ -2,7 +2,7 @@
 title: "Eleven Dashboards, One Question: Where Do I Look First?"
 project: claude-mcd
 tags: [AI, DevOps, Observability, Agents, Mission Control]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
