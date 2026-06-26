@@ -104,7 +104,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Wall of Agents: A Fleet Mosaic and a Lifecycle Clock for At-a-Glance Triage* — MCD's P260 Fleet Mosaic renders every project as a status-colored tile and P261 Lifecycle Clock maps fleet activity onto a 24-hour radial dial [commit `91572a4` P260+P261]
 
 ### New candidates — ideate scan 2026-06-26 (MCD P262–P272)
-- *What Your Agents Forgot to Write Down: A Memory Coverage Gap Detector* — MCD's P268 flags projects whose activity is high but whose MEMORY.md coverage is thin, surfacing agents accumulating experience without persisting it [commit `0041fd7` P267+P268]
+- *What Your Agents Forgot to Write Down: A Memory Coverage Gap Detector* — MCD's P268 flags projects whose activity is high but whose MEMORY.md coverage is thin, surfacing agents accumulating experience without persisting it [commit `0041fd7` P267+P268] ✅ Published as *The Agent That Did the Work But Forgot to Write It Down* ([bistecglobal/blog#63](https://github.com/bistecglobal/blog/issues/63))
 - *One Heatmap, Every Tool: Cross-Project Tool Usage at a Glance* — MCD's P270 renders a project × tool heatmap of call frequency, exposing which agents lean on which tools and where usage is anomalous [commit `c2a4a2e` P270]
 - *Watching Knowledge Accumulate: A Fleet Memory Growth Timeline* — MCD's P269 charts cumulative memory entries per project over time, making the pace of each agent's learning visible [commit `60875c0` P269]
 - *How Long Do Agents Run? A Session Length Distribution for a Fleet* — MCD's P271 bins session durations and P272 maps per-project inactivity onto a heatmap, separating marathon sessions from quick check-ins [commit `5f42cf1` P271+P272]
