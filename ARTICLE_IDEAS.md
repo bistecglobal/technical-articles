@@ -103,6 +103,21 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *The Operator Inbox: A Unified Action Queue for Steering an Agent Fleet* — MCD's P248 Operator Inbox aggregates everything needing a human decision across all projects into one prioritized queue, alongside P249's per-session memory timeline [commit `7d7ccec` P248+P249]
 - *Wall of Agents: A Fleet Mosaic and a Lifecycle Clock for At-a-Glance Triage* — MCD's P260 Fleet Mosaic renders every project as a status-colored tile and P261 Lifecycle Clock maps fleet activity onto a 24-hour radial dial [commit `91572a4` P260+P261]
 
+### New candidates — ideate scan 2026-06-26 (MCD P262–P272)
+- *What Your Agents Forgot to Write Down: A Memory Coverage Gap Detector* — MCD's P268 flags projects whose activity is high but whose MEMORY.md coverage is thin, surfacing agents accumulating experience without persisting it [commit `0041fd7` P267+P268]
+- *One Heatmap, Every Tool: Cross-Project Tool Usage at a Glance* — MCD's P270 renders a project × tool heatmap of call frequency, exposing which agents lean on which tools and where usage is anomalous [commit `c2a4a2e` P270]
+- *Watching Knowledge Accumulate: A Fleet Memory Growth Timeline* — MCD's P269 charts cumulative memory entries per project over time, making the pace of each agent's learning visible [commit `60875c0` P269]
+- *How Long Do Agents Run? A Session Length Distribution for a Fleet* — MCD's P271 bins session durations and P272 maps per-project inactivity onto a heatmap, separating marathon sessions from quick check-ins [commit `5f42cf1` P271+P272]
+- *Memory at a Glance: Density, Velocity, and Age Strips for Agent Knowledge* — MCD's P264 memory density heatmap, P265 write-velocity sparklines, and P266 file-age strip turn raw MEMORY.md files into three quick-read health visuals [commits `ff1026e` P264, `b60630e` P265+P266]
+- *Beyond the Dashboard: A Holographic Overview and Star Map for an Agent Fleet* — MCD's P262 Holographic Overview and P263 Fleet Star Map are spatial, ambient renderings of fleet state for wall-display mission control [commit `9d22bec` P262+P263]
+
+### New candidates — ideate scan 2026-06-26 (agent-nexus)
+- *Bring Your Own Deploy Connection: Foundry Deploy Credentials via Platform Connectors* — agent-nexus now lets tenants supply their own Azure AI Foundry deploy credentials through Platform Connectors (BYO deploy connection), decoupling deployment auth from host credentials [PR 241, commit `72e52be`]
+- *Dedupe and Reconcile: Fixing Discovered-Agent Promotion and Observability Dashboard Totals* — agent-nexus deduplicates discovered-agent promotion and corrects obs dashboard totals + Vertex cost, a case study in reconciling double-counted telemetry across clouds [PR 238, commit `4c744f4`]
+
+### New candidates — ideate scan 2026-06-26 (keyflow)
+- *Killing "Coming Soon": Wiring Up an Export-All-Data Button That Was a Stub* — keyflow replaced a coming-soon stub with a working full-data export, plus a sweep replacing browser `alert()`/`prompt()` with inline UI — a small honesty-in-UX cleanup [commits `4c00124` #361, `65c69b7` #362, `6c7ef50`]
+
 ### New candidates — ideate scan 2026-06-25 (agent-nexus)
 - *Header-Driven Multi-Tenancy: Gateway X-Tenant-Id Injection for Cross-Cloud Agent Observability* — agent-nexus's gateway now injects a tenant header on every governance call so OTLP ingest honors the first-hop tenant id end-to-end, with config parameterization and e2e tests [commit `d40a15e`] ✅ Published as *One Tenant, Two IDs* ([bistecglobal/blog#55](https://github.com/bistecglobal/blog/issues/55))
 
@@ -220,4 +235,4 @@ These cut across multiple projects and capture the broader Bistec engineering st
 
 ---
 
-*Updated: 2026-06-25 (published drawing-the-family-tree #58 [P229]; ideate scan — added 8 new MCD candidates P236+P237/P252/P258/P256/P251/P254/P248+P249/P260+P261) | Maintained by bistec-articles agent*
+*Updated: 2026-06-26 (published the-sankey #59 [P237], digital-twins #60 [P258]; ideate scan — added 9 new candidates: MCD P262–P272, agent-nexus Foundry BYO deploy + obs dedupe, keyflow export-all-data) | Maintained by bistec-articles agent*
