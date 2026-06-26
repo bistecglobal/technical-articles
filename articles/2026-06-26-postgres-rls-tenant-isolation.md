@@ -2,7 +2,7 @@
 title: "One Forgotten WHERE Clause: Making the Database Enforce Tenant Isolation"
 project: agent-nexus
 tags: [Security, Multi-Tenancy, PostgreSQL, Architecture, AI]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
