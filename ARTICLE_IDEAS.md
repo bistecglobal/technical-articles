@@ -113,7 +113,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 
 ### New candidates — ideate scan 2026-06-26 (agent-nexus)
 - *Bring Your Own Deploy Connection: Foundry Deploy Credentials via Platform Connectors* — agent-nexus now lets tenants supply their own Azure AI Foundry deploy credentials through Platform Connectors (BYO deploy connection), decoupling deployment auth from host credentials [PR 241, commit `72e52be`] ✅ Published as *Whose Cloud Does It Deploy To?* ([bistecglobal/blog#61](https://github.com/bistecglobal/blog/issues/61))
-- *Dedupe and Reconcile: Fixing Discovered-Agent Promotion and Observability Dashboard Totals* — agent-nexus deduplicates discovered-agent promotion and corrects obs dashboard totals + Vertex cost, a case study in reconciling double-counted telemetry across clouds [PR 238, commit `4c744f4`]
+- *Dedupe and Reconcile: Fixing Discovered-Agent Promotion and Observability Dashboard Totals* — agent-nexus deduplicates discovered-agent promotion and corrects obs dashboard totals + Vertex cost, a case study in reconciling double-counted telemetry across clouds [PR 238, commit `4c744f4`] ✅ Published as *One Agent Counted Twice, Every Total Counted Too Little* ([bistecglobal/blog#62](https://github.com/bistecglobal/blog/issues/62))
 
 ### New candidates — ideate scan 2026-06-26 (keyflow)
 - *Killing "Coming Soon": Wiring Up an Export-All-Data Button That Was a Stub* — keyflow replaced a coming-soon stub with a working full-data export, plus a sweep replacing browser `alert()`/`prompt()` with inline UI — a small honesty-in-UX cleanup [commits `4c00124` #361, `65c69b7` #362, `6c7ef50`]
