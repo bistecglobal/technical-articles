@@ -2,7 +2,7 @@
 title: "The Sankey That Shows How Agents Move: Reconstructing Fleet State From Raw Logs"
 project: claude-mcd
 tags: [AI, Agents, Observability, DevOps, Claude]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
