@@ -2,7 +2,7 @@
 title: "The Agent That Did the Work But Forgot to Write It Down"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Developer Tooling, AI Agents]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
@@ -90,9 +90,9 @@ keyflow-okr      ●      ✓    ✓    ✗    ✗    ✓     6      2
 specclaw         ●      ✓    ✓    ✓    ✓    ✓    14      0
 ```
 
-## What it surfaced
+## What it makes visible
 
-The most useful thing the detector did on day one was contradict the rest of the dashboard. Several projects that scored well on activity metrics — plenty of turns, healthy token spend — lit up amber and red on memory coverage. They were doing the work and not writing it down. That's precisely the agent that will burn the same tokens re-learning the same lessons after its next context reset, and it's invisible to any metric that only counts throughput.
+The detector's value is that it can contradict the rest of the dashboard. A project can score well on activity metrics — plenty of turns, healthy token spend — and still light up amber or red on memory coverage. That combination is the one to worry about: an agent doing the work and not writing it down will re-discover the same lessons after its next context reset, and that cost is invisible to any metric that only counts throughput.
 
 The detector reframes a fuzzy worry ("are our agents actually accumulating knowledge?") as a sortable integer per project. It turns "we should probably check on memory hygiene sometime" into a red number at the top of a table.
 
