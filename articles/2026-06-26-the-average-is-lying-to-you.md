@@ -2,7 +2,7 @@
 title: "The Average Is Lying to You: Percentile Latency for an AI Agent Fleet"
 project: claude-mcd
 tags: [AI, Observability, DevOps, SRE, Developer Tooling]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
@@ -80,7 +80,7 @@ function computeTrend(recent: number | null, prior: number | null): LatencyTrend
 }
 ```
 
-We deliberately track the trend on **p90, not the mean** — the tail is where regressions show up first and where they hurt most. A 10% dead band keeps the arrows from flickering on noise; anything inside ±10% reads as "stable." Each window needs at least three samples of its own, or the comparison returns `null` and the project is reported as stable rather than fabricating a trend from one data point. The result is a single glyph per project — ↓ improving, → stable, ↑ degrading — with the actual before/after p90 values shown on hover.
+We deliberately track the trend on **p90, not the mean** — the tail is where regressions show up first and where they hurt most. A 10% dead band keeps the arrows from flickering on noise; anything inside ±10% reads as "stable." Each window needs at least three samples of its own, or the comparison returns `null` and the project is reported as stable rather than fabricating a trend from one data point. The result is a single glyph per project — ↓ improving, → stable, ↑ degrading — with the actual before/after p90 values shown inline in the summary table.
 
 ## What the percentiles showed
 
