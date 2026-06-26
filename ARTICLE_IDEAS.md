@@ -112,7 +112,7 @@ Multi-project AI agent orchestration platform over Discord and Teams.
 - *Beyond the Dashboard: A Holographic Overview and Star Map for an Agent Fleet* — MCD's P262 Holographic Overview and P263 Fleet Star Map are spatial, ambient renderings of fleet state for wall-display mission control [commit `9d22bec` P262+P263]
 
 ### New candidates — ideate scan 2026-06-26 (agent-nexus)
-- *Bring Your Own Deploy Connection: Foundry Deploy Credentials via Platform Connectors* — agent-nexus now lets tenants supply their own Azure AI Foundry deploy credentials through Platform Connectors (BYO deploy connection), decoupling deployment auth from host credentials [PR 241, commit `72e52be`]
+- *Bring Your Own Deploy Connection: Foundry Deploy Credentials via Platform Connectors* — agent-nexus now lets tenants supply their own Azure AI Foundry deploy credentials through Platform Connectors (BYO deploy connection), decoupling deployment auth from host credentials [PR 241, commit `72e52be`] ✅ Published as *Whose Cloud Does It Deploy To?* ([bistecglobal/blog#61](https://github.com/bistecglobal/blog/issues/61))
 - *Dedupe and Reconcile: Fixing Discovered-Agent Promotion and Observability Dashboard Totals* — agent-nexus deduplicates discovered-agent promotion and corrects obs dashboard totals + Vertex cost, a case study in reconciling double-counted telemetry across clouds [PR 238, commit `4c744f4`]
 
 ### New candidates — ideate scan 2026-06-26 (keyflow)
