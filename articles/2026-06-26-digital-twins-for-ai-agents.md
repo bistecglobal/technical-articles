@@ -2,7 +2,7 @@
 title: "Digital Twins for AI Agents: Finding the Project That Behaves Just Like This One"
 project: claude-mcd
 tags: [AI, Agents, Observability, MachineLearning, Claude]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
