@@ -2,7 +2,7 @@
 title: "One Agent Counted Twice, Every Total Counted Too Little: Reconciling Cross-Cloud Telemetry"
 project: agent-nexus
 tags: [AI, Cloud, Observability, Multi-Tenant, DotNet, OpenTelemetry]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
