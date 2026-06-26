@@ -2,7 +2,7 @@
 title: "One Heatmap, Every Tool: Seeing What Your AI Agent Fleet Actually Does"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Developer Tooling, Data Visualization]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
