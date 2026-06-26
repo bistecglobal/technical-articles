@@ -2,7 +2,7 @@
 title: "Whose Cloud Does It Deploy To? Tenant-Scoped Deploy Credentials Done Carefully"
 project: agent-nexus
 tags: [Cloud, MultiTenancy, Security, AI, Azure]
-status: draft
+status: audited
 date: 2026-06-26
 ---
 
