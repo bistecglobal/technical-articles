@@ -233,6 +233,16 @@ These cut across multiple projects and capture the broader Bistec engineering st
 - *Memory That Persists: Building Cross-Session AI Context for a Multi-Project Fleet*
 - *Provider Agnostic AI: How We Switch Between Anthropic and MiniMax Mid-Sprint*
 
+### New candidates — ideate scan 2026-06-26 (MCD P273–P293, agent-nexus, keyflow)
+- *Closing the Memory Loop: A Recovery Feedback Cycle for Agents That Forget* — MCD's P293 Memory Recovery Feedback Loop detects when an agent's memory coverage degrades and feeds a recovery prompt back into the session, then tracks whether the agent actually wrote the missing knowledge down [commit `4dadf07` P293]
+- *Catching a Tool Going Bad: Spike Detection on Per-Tool Failure Rates* — MCD's P292 Tool Failure Spike Detector watches per-tool error rates across the fleet and flags sudden spikes (a failing MCP server, a broken Bash path) before they cascade, paired with P291's alert-delivery audit log proving every alert was actually delivered [commit `c442538` P291+P292]
+- *Why Did the Watchdog Fire? A Heatmap of Agent Kill Patterns* — MCD's P289 Watchdog Kill Pattern Heatmap cross-tabs which projects get killed by the stall watchdog at which times, surfacing systemic kill patterns vs one-off stalls, alongside P290's proposal-implementation-lag tracker [commit `0278ed0` P289+P290]
+- *Multi-Tenant by Construction: Postgres Row-Level Security for an AI Agent Platform* — agent-nexus moved to a pure-tenant model enforced by Postgres RLS, pushing tenant isolation into the database itself rather than trusting every query to filter correctly — a strong, generalizable security-architecture case study [PR 237, commit `1596b7a`]
+- *Hot-Reloading the Brain: Live StepGraph Plugin Reloads Without Restarting Agents* — agent-nexus's Plugin StepGraph hot-reload swaps agent workflow plugins at runtime without tearing down the process, keeping long-running agents online through logic updates [PR 244, commit `ade2161`]
+- *Wiring OpenTelemetry Into a Multi-Tenant Agent Platform* — agent-nexus added an otel-collector, tenant-ingest-worker, and Zitadel SMTP to its deploy, building a per-tenant observability ingest path on open standards [commit `e521d11`]
+- *A Retry Button for Every API Failure: Fleet-Wide Error Toasts in Keyflow* — keyflow added a global API error toast with a retry action, turning silent fetch failures into a recoverable, visible UX across the whole app [commit `18371c3` #354]
+- *Is This Cycle on Track? Surfacing Elapsed-Time vs Score Context on OKRs* — keyflow's My OKRs now shows a cycle-health context row comparing elapsed time percentage against average score, giving users an at-a-glance "am I behind?" signal [commit `9862fc1` #353]
+
 ---
 
-*Updated: 2026-06-26 (published the-sankey #59 [P237], digital-twins #60 [P258]; ideate scan — added 9 new candidates: MCD P262–P272, agent-nexus Foundry BYO deploy + obs dedupe, keyflow export-all-data) | Maintained by bistec-articles agent*
+*Updated: 2026-06-26 (published the-sankey #59 [P237], digital-twins #60 [P258], tool-usage-heatmap #66 [P270]; ideate scan — added 8 new candidates: MCD P289–P293, agent-nexus RLS tenant isolation + plugin hot-reload + otel, keyflow error-toast + cycle-health) | Maintained by bistec-articles agent*
