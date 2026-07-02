@@ -2,7 +2,7 @@
 title: "When Three Agents Fail at Once: Correlating Tool Errors Across a Fleet"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Reliability, Developer Tooling]
-status: draft
+status: audited
 date: 2026-07-02
 ---
 
