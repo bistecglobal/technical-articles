@@ -2,7 +2,7 @@
 title: "The Watchdog's Logbook: Reading When and Why an AI Fleet Gets Killed"
 project: claude-mcd
 tags: [AI, Observability, DevOps, Autonomous Agents, Mission Control]
-status: draft
+status: audited
 date: 2026-07-02
 ---
 
