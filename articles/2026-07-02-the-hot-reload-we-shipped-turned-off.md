@@ -2,7 +2,7 @@
 title: "The Hot-Reload We Shipped Turned Off"
 project: agent-nexus
 tags: [AI, DevOps, dotnet, developer-experience, architecture]
-status: draft
+status: audited
 date: 2026-07-02
 ---
 
