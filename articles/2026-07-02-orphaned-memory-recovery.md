@@ -2,7 +2,7 @@
 title: "The Note Nobody Links To: Tracking Orphaned Memory Across an AI Agent Fleet"
 project: claude-mcd
 tags: [AI, Agents, Observability, DevOps, Knowledge-Management]
-status: draft
+status: audited
 date: 2026-07-02
 ---
 
